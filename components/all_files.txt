@@ -127,7 +127,7 @@ export default function Navbar() {
                             <div className="w-8 h-8 bg-[#1E3A8A] mr-3 rounded-sm flex items-center justify-center">
                                 <span className="text-white text-lg font-serif">A</span>
                             </div>
-                            ATLE Immigration
+                            Procédure Facile
                         </Link>
                     </div>
 

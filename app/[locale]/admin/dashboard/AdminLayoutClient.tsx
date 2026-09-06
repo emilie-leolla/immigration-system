@@ -33,7 +33,7 @@ export default function AdminDashboardLayout({
         if (!isPending) {
             // Check if user is logged in
             if (!session) {
-                router.push("/admin/login");
+                router.push("/sign-in");
             }
         }
     }, [session, isPending, router]);

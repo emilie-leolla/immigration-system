@@ -7,7 +7,7 @@ import { hashPassword } from "better-auth/crypto"; // Use Better Auth utility
 import { revalidatePath } from "next/cache";
 import { checkAgentQuota } from "@/lib/subscription";
 import { auditDetails } from "@/lib/audit-log";
-export async function createAgentAction(formData: FormData) {
+export async function createAgentAction(formData: FormData): Promise<{ error?: string; code?: "NO_SUBSCRIPTION" | "INACTIVE" | "QUOTA_EXCEEDED"; success?: boolean }> {
     const session = await auth.api.getSession({
         headers: await headers()
     });
@@ -52,7 +52,7 @@ export async function createAgentAction(formData: FormData) {
         // 3. Hash the password using Better Auth's expected algorithm (scrypt)
         const quota = await checkAgentQuota(adminAgencyId);
 if (!quota.ok) {
-    return { error: quota.error };
+    return { error: quota.error, code: quota.code };
 }
         const hashedPassword = await hashPassword(password);
 

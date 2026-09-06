@@ -20,17 +20,11 @@ export function Header({ title, onMenuClick, showLogout = false, centerSlot, loc
     const pathname = usePathname();
 
     const handleLogout = async () => {
-        const userRole = session?.user?.role?.toUpperCase();
+        sessionStorage.removeItem("freeModeDialogShown");
         await signOut({
             fetchOptions: {
                 onSuccess: () => {
-                    if (userRole === "SUPER_ADMIN") {
-                        router.push("/super-admin/login");
-                    } else if (userRole === "AGENT" || userRole === "ADMIN") {
-                        router.push("/admin/login");
-                    } else {
-                        router.push("/sign-in");
-                    }
+                    router.push("/sign-in");
                 }
             }
         });

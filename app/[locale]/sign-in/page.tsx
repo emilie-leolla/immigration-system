@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "@/lib/auth-client";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
+import Image from "next/image";
+import { LOGOS } from "@/lib/branding";
 
 function SignInForm() {
     const t = useTranslations("auth.signIn");
@@ -59,6 +61,14 @@ function SignInForm() {
     return (
         <div className="w-full max-w-md bg-white rounded-md shadow-sm border border-gray-100 p-8 relative z-10">
             <div className="text-center mb-8">
+                <Image
+                    src={LOGOS.login}
+                    alt="Procédure Facile"
+                    width={600}
+                    height={300}
+                    className="h-24 w-auto mx-auto mb-4 object-contain"
+                    priority
+                />
                 <h1 className="text-2xl font-bold text-gray-900 tracking-tight">{t("title")}</h1>
                 <p className="mt-2 text-sm text-gray-500">{t("subtitle")}</p>
             </div>
@@ -112,8 +122,15 @@ function SignInForm() {
                 </button>
             </form>
 
-           
-            
+            <div className="mt-6 text-center text-sm text-gray-500">
+                {t("noAccount")}{" "}
+                <a
+                    href={`/${locale}/admin/register`}
+                    className="font-semibold text-[#1E3A8A] hover:underline"
+                >
+                    {t("signUp")}
+                </a>
+            </div>
         </div>
     );
 }

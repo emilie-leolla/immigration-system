@@ -21,7 +21,7 @@ export async function sendEmail({
 
     try {
         await resend.emails.send({
-            from: `${fromName || "ATLE immigration"} <onboarding@resend.dev>`,
+            from: `${fromName || "Procédure Facile"} <noreply@procedure-facile.com>`,
             to,
             subject,
             html,

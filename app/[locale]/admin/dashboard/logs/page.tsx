@@ -18,9 +18,49 @@ export default async function SystemLogsPage() {
         return null;
     }
 
-    const agencyId = (session.user as any)?.agencyId;
+    const user = session.user as any;
+    const userRole = user?.role?.toUpperCase();
+    const agencyId = user?.agencyId;
 
-    if (!agencyId) {
+    /*
+     * Access rules:
+     *
+     * SUPER_ADMIN
+     * → Can see all system audit logs.
+     *
+     * ADMIN
+     * → Can only see logs belonging to their own agency.
+     *
+     * Any other role
+     * → No access to this system-wide log page.
+     */
+
+    if (userRole !== "SUPER_ADMIN" && userRole !== "ADMIN") {
+        return null;
+    }
+
+    /*
+     * Build the Prisma filter according to the user's role.
+     *
+     * SUPER_ADMIN:
+     * No agency filter → global system history.
+     *
+     * ADMIN:
+     * agencyId is mandatory → only this agency's history.
+     */
+    const where =
+        userRole === "SUPER_ADMIN"
+            ? {}
+            : agencyId
+              ? {
+                    agencyId
+                }
+              : null;
+
+    /*
+     * An ADMIN without an agency must not receive any logs.
+     */
+    if (where === null) {
         return (
             <div className="space-y-6 max-w-7xl mx-auto">
                 <div>
@@ -44,9 +84,7 @@ export default async function SystemLogsPage() {
     }
 
     const logs = await prisma.auditLog.findMany({
-        where: {
-            agencyId
-        },
+        where,
         include: {
             author: true
         },

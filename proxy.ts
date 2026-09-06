@@ -50,7 +50,10 @@ export default async function proxy(request: NextRequest) {
     console.log("[DEBUG] cookie header:", request.headers.get("cookie"));
     console.log("[DEBUG] session found:", session ? `yes (user: ${session.user?.email})` : "NO");
 
-    const publicAdminRoutes = ["/admin/login", "/admin/register", "/super-admin/login"];
+    // /admin/login and /super-admin/login have been removed — everyone now
+    // signs in through the single client-designed /sign-in page. Only the
+    // admin registration page remains public here.
+    const publicAdminRoutes = ["/admin/register"];
 
     if (!session) {
         const protectedPaths = ["/admin", "/super-admin", "/dashboard", "/complete-profile", "/applications"];
@@ -62,7 +65,7 @@ export default async function proxy(request: NextRequest) {
                     // /super-admin isn't part of the [locale] tree
                     return NextResponse.next();
                 }
-                // For /admin/login etc, let next-intl handle the routing
+                // For /admin/register, let next-intl handle the routing
                 return intlMiddleware(request);
             }
             url.pathname = `/sign-in`;

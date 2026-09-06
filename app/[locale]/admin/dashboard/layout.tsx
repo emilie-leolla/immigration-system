@@ -17,6 +17,8 @@ import { useRouter, useParams } from "next/navigation";
 import { getMyAgencyName } from "@/lib/agency-actions";
 import AiSearchBar from "@/app/[locale]/admin/dashboard/search/ai-search-bar";
 import AiChatDrawer from "@/app/[locale]/admin/dashboard/search/ai-chat-drawer";
+import { FreeModeDialog } from "@/app/[locale]/admin/dashboard/free-mode-dialog";
+import { UpgradeDialogProvider } from "@/app/[locale]/admin/dashboard/upgrade-dialog-context";
 import { useTranslations } from "next-intl";
 export default function AdminDashboardLayout({
     children,
@@ -36,7 +38,7 @@ export default function AdminDashboardLayout({
         if (!isPending) {
             // Check if user is logged in
             if (!session) {
-                router.push("/admin/login");
+                router.push("/sign-in");
             }
         }
     }, [session, isPending, router]);
@@ -64,35 +66,38 @@ const adminSidebarItems = [
         { icon: "Settings", label: t("nav.systemSettings"), href: "/admin/dashboard/settings" }
     ];
     return (
-        <div className="flex bg-white min-h-screen" style={{ fontFamily: "var(--font-geist-sans)" }}>
-            {/* Sidebar */}
-            <Sidebar
-                items={adminSidebarItems}
-                userRole={t("userRole")}
-                userName={session?.user?.name || t("defaultUserName")}
-                agencyName={agencyName}
-                isOpen={isSidebarOpen}
-                onClose={() => setIsSidebarOpen(false)}
-            />
-            
-
-            {/* Main Content wrapper */}
-            <div className="flex-1 md:ml-64 flex flex-col min-h-screen relative max-w-full">
-                <Header 
-                    title="" 
-                    showLogout={true} 
-                    onMenuClick={() => setIsSidebarOpen(true)}
-                    centerSlot={<AiSearchBar />}
-                    locale={locale}
+        <UpgradeDialogProvider>
+            <div className="flex bg-white min-h-screen" style={{ fontFamily: "var(--font-geist-sans)" }}>
+                {/* Sidebar */}
+                <Sidebar
+                    items={adminSidebarItems}
+                    userRole={t("userRole")}
+                    userName={session?.user?.name || t("defaultUserName")}
+                    agencyName={agencyName}
+                    isOpen={isSidebarOpen}
+                    onClose={() => setIsSidebarOpen(false)}
                 />
-            
-                <main className="flex-1 p-4 md:p-8 overflow-y-auto w-full mx-auto" style={{ backgroundColor: "#F9FAFB" }}>
-                    {children}
-                </main>
 
-                <AiChatDrawer />
+
+                {/* Main Content wrapper */}
+                <div className="flex-1 md:ml-64 flex flex-col min-h-screen relative max-w-full">
+                    <Header
+                        title=""
+                        showLogout={true}
+                        onMenuClick={() => setIsSidebarOpen(true)}
+                        centerSlot={<AiSearchBar />}
+                        locale={locale}
+                    />
+
+                    <main className="flex-1 p-4 md:p-8 overflow-y-auto w-full mx-auto" style={{ backgroundColor: "#F9FAFB" }}>
+                        {children}
+                    </main>
+
+                    <AiChatDrawer />
+                    <FreeModeDialog />
+                </div>
+
             </div>
-
-        </div>
+        </UpgradeDialogProvider>
     );
 }

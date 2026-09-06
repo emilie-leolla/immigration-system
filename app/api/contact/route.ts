@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
         console.log("Transporter configured:", { gmailUser });
         // Send the email
         await transporter.sendMail({
-            from: `"ATLE Immigration" <${gmailUser}>`,
+            from: `"Procédure Facile" <${gmailUser}>`,
             to: "emilieag573@gmail.com",
             replyTo: email,
             subject: `New Inquiry from ${fullName}`,

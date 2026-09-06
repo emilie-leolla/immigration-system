@@ -90,15 +90,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                             </div>
                             <button
                                 onClick={async () => {
-                                    const userRole = session?.user?.role?.toUpperCase();
                                     await signOut({
                                          fetchOptions: {
                                              onSuccess: () => {
-                                                 if (userRole === "AGENT" || userRole === "ADMIN") {
-                                                     window.location.href = "/admin/login";
-                                                 } else {
-                                                     window.location.href = "/sign-in";
-                                                 }
+                                                 window.location.href = "/sign-in";
                                              }
                                          }
                                      });

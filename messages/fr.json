@@ -61,21 +61,21 @@
     "dashboard": {
       "logout": "Déconnexion",
       "client": {
-        "atleClient": "ATLE Client",
+        "atleClient": " PF Client",
         "overview": "Tableau de Bord",
         "applications": "Demandes",
         "messages": "Messages Officiels",
         "profile": "Profil"
       },
       "agent": {
-        "atleAgent": "ATLE Agent",
+        "atleAgent": "PF Agent",
         "overview": "Aperçu",
         "applications": "Toutes les Demandes",
         "profile": "Profil",
         "clients": "Clients"
       },
       "admin": {
-        "atleAdmin": "ATLE Admin",
+        "atleAdmin": "PF Admin",
         "overview": "Tableau de Bord",
         "clients": "Clients",
         "agents": "Agents",
@@ -89,7 +89,7 @@
       "offices": "Nos Bureaux",
       "privacy": "Politique de Confidentialité",
       "terms": "Conditions d'Utilisation",
-      "copyright": "ATLE Immigration Consultancy.",
+      "copyright": "Procédure Facile Consultancy.",
       "address": "DOUALA, CAMEROUN\nBonamoussadi, carrefour maison blanche"
     }
   },
@@ -118,7 +118,7 @@
       "learnMore": "En savoir plus"
     },
     "whyChooseUs": {
-      "title": "Pourquoi choisir ATLE Immigration ?",
+      "title": "Pourquoi choisir Procédure Facile ?",
       "subtitle": "Nous combinons des années d'expertise juridique avec un engagement envers le succès des clients, garantissant que votre cas est traité avec le plus haut niveau de professionnalisme et de diligence.",
       "provenTrackRecord": {
         "title": "Antécédents éprouvés",
@@ -206,7 +206,7 @@
     "officeInfo": {
       "title": "Notre bureau",
       "address": "Adresse",
-      "addressText": "ATLE Immigration\nDOUALA, CAMEROUN\nBonamoussadi, carrefour maison blanche",
+      "addressText": "Procédure Facile\nDOUALA, CAMEROUN\nBonamoussadi, carrefour maison blanche",
       "phone": "Téléphone",
       "email": "E-mail",
       "operatingHours": "Heures d'ouverture"
@@ -220,8 +220,8 @@
       "password": "Mot de passe",
       "button": "Se connecter",
       "forgotPassword": "Mot de passe oublié ?",
-      "noAccount": "Vous n'avez pas de compte ?",
-      "signUp": "S'inscrire ici",
+      "noAccount": "Vous mettez en place une agence ?",
+      "signUp": "Inscrivez votre agence",
       "suspendedError": "Votre compte a été suspendu. Veuillez contacter l'agence.",
       "allFieldsRequired": "Tous les champs sont obligatoires.",
       "invalidCredentials": "E-mail ou mot de passe invalide.",
@@ -654,18 +654,38 @@
       "errorAllFields": "Tous les champs sont obligatoires.",
       "errorEmailFormat": "Veuillez saisir une adresse e-mail valide.",
       "errorPasswordLength": "Le mot de passe doit contenir au moins 8 caractères.",
+      "errorPasswordsMismatch": "Les mots de passe ne correspondent pas.",
       "errorGeneric": "Échec de l'inscription",
       "errorUnexpected": "Une erreur inattendue s'est produite.",
-      "title": "Inscription Administrateur",
-      "subtitle": "Créer un compte administrateur.",
+      "title": "Créez le compte de votre agence",
+      "subtitle": "Inscrivez votre agence pour commencer à gérer vos clients et vos dossiers.",
+      "agencyName": "Nom de l'agence",
+      "agencyNamePlaceholder": "Agence Procédure Facile",
       "fullName": "Nom complet",
       "fullNamePlaceholder": "Jean Dupont",
+      "profession": "Profession",
+      "professionPlaceholder": "Consultant en immigration",
       "email": "E-mail",
       "emailPlaceholder": "admin@example.com",
+      "address": "Adresse",
+      "addressPlaceholder": "123 rue Principale, Yaoundé",
       "password": "Mot de passe",
-      "creating": "Création en cours...",
-      "createAccount": "Créer le compte administrateur",
-      "footerNote": "Configuration réservée aux personnes autorisées."
+      "confirmPassword": "Confirmer le mot de passe",
+      "creating": "Création de votre compte...",
+      "createAccount": "Créer le compte de l'agence",
+      "footerNote": "En vous inscrivant, vous acceptez de gérer les clients et les dossiers de votre agence de manière responsable.",
+      "otpCheckEmailTitle": "Vérifiez votre e-mail",
+      "otpCheckEmailSubtitle": "Nous avons envoyé un code à 6 chiffres à {email}. Saisissez-le ci-dessous pour terminer la création du compte de votre agence.",
+      "otpCodeLabel": "Code de vérification",
+      "otpVerifyButton": "Vérifier et continuer",
+      "otpVerifying": "Vérification en cours...",
+      "otpResend": "Renvoyer le code",
+      "otpResendCooldown": "Renvoyer le code dans {seconds}s",
+      "otpErrorLength": "Veuillez saisir le code à 6 chiffres.",
+      "otpErrorInvalid": "Code invalide ou expiré. Veuillez réessayer.",
+      "otpErrorSendFailed": "Compte créé, mais l'envoi du code de vérification a échoué. Essayez de vous connecter pour le renvoyer.",
+      "otpErrorResendFailed": "Impossible de renvoyer le code. Veuillez réessayer sous peu.",
+      "backToSignIn": "Retour à la connexion"
     },
     "login": {
       "errorInvalidCredentials": "Identifiants invalides",
@@ -679,6 +699,12 @@
       "signIn": "Se connecter",
       "footerNote": "Accès réservé aux personnes autorisées"
     }
+  },
+  "freeModeDialog": {
+    "title": "Vous êtes en mode gratuit",
+    "description": "Votre agence n'a pas encore d'abonnement payant, certaines limites s'appliquent donc. Vous pouvez passer à un forfait supérieur à tout moment pour débloquer plus d'agents et de clients, ou continuer à explorer le forfait gratuit pour l'instant.",
+    "continueButton": "Continuer en mode gratuit",
+    "upgradeButton": "Passer à un forfait supérieur"
   },
   "adminAgents": {
     "noAgencyLinked": "Votre compte n'est lié à aucune agence.",
@@ -1354,6 +1380,12 @@
     "PASSPORT_SUBMISSION": "Soumission du passeport et traitement du visa"
   },
   "auditLog": {
+    "agencyCreated": "Agence {name} ({email}) créée.",
+    "agencyCreatedBySuperAdmin": "Agence {agencyName} créée avec l'administrateur {adminName} ({adminEmail}) par le Super Admin.",
+    "agencyDeleted": "Agence {name} supprimée définitivement par le Super Admin.",
+    "agencyPlanChanged": "Forfait de l'agence {agencyName} changé vers {planName} par le Super Admin.",
+    "agencyPlanSetBySuperAdmin": "Forfait de l'agence {agencyName} défini sur {planName} par le Super Admin.",
+    "agencyUpdated": "Agence mise à jour vers {name} ({email}) par le Super Admin.",
     "agentCreated": "Agent {name} ({email}) créé par l'administrateur.",
     "agentSuspended": "Agent {name} ({email}) suspendu par l'administrateur.",
     "agentUnsuspended": "Agent {name} ({email}) réactivé par l'administrateur.",
@@ -1419,5 +1451,71 @@
     "CANCEL_PLAN_DOWNGRADE": "Annuler la rétrogradation de forfait",
     "SCHEDULE_PLAN_DOWNGRADE": "Programmer une rétrogradation de forfait",
     "UPGRADE_SUBSCRIPTION": "Mise à niveau de l'abonnement"
-  }
+  },
+  "superAdminDashboard": {
+    "eyebrow": "Administration globale",
+    "title": "Tableau de bord Super Admin",
+    "subtitle": "Vue d’ensemble de toute la plateforme Procédure-Facile.",
+    "role": "Super Administrateur",
+    "defaultUserName": "Super Administrateur",
+    "nav": {
+      "dashboard": "Tableau de bord",
+      "agencies": "Agences",
+      "payments": "Paiements",
+      "users": "Utilisateurs",
+      "history": "Historique",
+      "settings": "Paramètres"
+    },
+    "stats": {
+      "agencies": "Agences",
+      "users": "Utilisateurs",
+      "procedures": "Procédures",
+      "revenue": "Revenus encaissés"
+    },
+    "activity": {
+      "title": "Historique global des activités",
+      "viewAll": "Voir tout l’historique",
+      "noDetails": "Aucun détail fourni.",
+      "system": "Système",
+      "platform": "Plateforme",
+      "empty": "Aucune activité enregistrée pour le moment."
+    },
+    "agencyStatus": {
+      "title": "État des agences",
+      "active": "Agences actives",
+      "suspended": "Agences suspendues"
+    },
+    "procedures": {
+      "title": "Procédures par statut",
+      "pending": "En attente",
+      "inReview": "En examen",
+      "approved": "Approuvées",
+      "rejected": "Rejetées",
+      "completed": "Terminées"
+    },
+    "users": {
+      "title": "Répartition des utilisateurs",
+      "admins": "Admins",
+      "agents": "Agents",
+      "clients": "Clients"
+    },
+    "historyPage": {
+      "title": "Historique global",
+      "subtitle": "Toutes les activités enregistrées sur la plateforme, toutes agences confondues.",
+      "searchPlaceholder": "Rechercher une action, un utilisateur ou une agence...",
+      "all": "Toute l’activité",
+      "agencies": "Agences",
+      "users": "Utilisateurs",
+      "empty": "Aucun journal trouvé."
+    },
+    "agenciesPage": {
+      "title": "Agences",
+      "subtitle": "Gérer toutes les agences de la plateforme et leur forfait d’abonnement."
+    }
+  },"pagination": {
+        "showing": "Affichage de {start}–{end} sur {total}",
+        "previous": "Précédent",
+        "next": "Suivant",
+        "goToPage": "Aller à la page {page}"
+    }
 }

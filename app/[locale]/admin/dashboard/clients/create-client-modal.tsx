@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { createClientAction } from "./actions";
 import { useTranslations } from "next-intl";
+import { useUpgradeDialog } from "@/app/[locale]/admin/dashboard/upgrade-dialog-context";
 
 interface Agent {
     id: string;
@@ -36,6 +37,7 @@ function generatePassword(): string {
 
 export default function CreateClientModal({ agents, onClientCreated }: CreateClientModalProps) {
     const t = useTranslations("adminCreateClient");
+    const { openUpgradeDialog } = useUpgradeDialog();
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -89,7 +91,12 @@ export default function CreateClientModal({ agents, onClientCreated }: CreateCli
         setLoading(false);
 
         if (res.error) {
-            setError(res.error);
+            if (res.code === "QUOTA_EXCEEDED") {
+                setIsOpen(false);
+                openUpgradeDialog();
+            } else {
+                setError(res.error);
+            }
         } else {
             // Show success screen with the credentials
             setSuccess({ name, email, password });

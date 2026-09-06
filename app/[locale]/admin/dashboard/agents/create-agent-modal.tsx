@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Plus, Loader2, Eye, EyeOff } from "lucide-react";
 import { createAgentAction } from "./actions";
 import { useTranslations } from "next-intl";
+import { useUpgradeDialog } from "@/app/[locale]/admin/dashboard/upgrade-dialog-context";
 
 export default function CreateAgentModal() {
     const t = useTranslations("adminAgents.create");
+    const { openUpgradeDialog } = useUpgradeDialog();
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -24,7 +26,12 @@ export default function CreateAgentModal() {
         setLoading(false);
 
         if (res.error) {
-            setError(res.error);
+            if (res.code === "QUOTA_EXCEEDED") {
+                setIsOpen(false);
+                openUpgradeDialog();
+            } else {
+                setError(res.error);
+            }
         } else {
             setIsOpen(false);
         }

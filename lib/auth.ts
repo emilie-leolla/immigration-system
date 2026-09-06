@@ -2,7 +2,9 @@ import "dotenv/config";
 import { betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
 import prisma from '@/lib/prisma'
-import { multiSession } from "better-auth/plugins"
+import { multiSession, emailOTP } from "better-auth/plugins"
+import { sendEmail } from "@/lib/resend"
+import { buildOtpEmailHtml } from "@/lib/otp-email"
 
 export const auth = betterAuth({
     database: prismaAdapter(prisma, {
@@ -21,21 +23,42 @@ export const auth = betterAuth({
             maxAge: 60 * 60 * 24 * 90, // 90 days
         },
     },
-    /*
     plugins: [
-        multiSession({
-            maximumSessions: 5,
-        })
-    ],
-    */
+        emailOTP({
+            otpLength: 6,
+            expiresIn: 300, // 5 minutes
+            allowedAttempts: 3,
+            // Registration already creates the user directly (see
+            // app/[locale]/admin/register/actions.ts) — the OTP plugin is
+            // only ever used to verify an email that already exists, never
+            // to sign someone up on its own.
+            disableSignUp: true,
+            sendVerificationOTP: async ({ email, otp, type }) => {
+                const subject =
+                    type === "email-verification"
+                        ? "Your verification code"
+                        : "Your sign-in code";
 
-     debug: true,
+                const result = await sendEmail({
+                    to: email,
+                    subject,
+                    html: buildOtpEmailHtml({ otp, type }),
+                });
+
+                if (result.error) {
+                    console.error(`[Email OTP] Failed to send to ${email}:`, result.error);
+                }
+            },
+        }),
+    ],
+    debug: true,
     emailAndPassword: {
         enabled: true,
         autoSignIn: true,
     },
     emailVerification: {
         sendOnSignUp: true,
+        autoSignInAfterVerification: true,
         sendVerificationEmail: async ({ user, url, token }: any) => {
             console.log(`[Email Verification] Send to ${user.email}: ${url}`);
         },
@@ -85,6 +108,10 @@ export const auth = betterAuth({
                 required: false
             },
             phoneNumber: {
+                type: "string",
+                required: false
+            },
+            profession: {
                 type: "string",
                 required: false
             },

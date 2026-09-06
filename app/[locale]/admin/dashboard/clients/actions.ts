@@ -11,7 +11,7 @@ export async function createClientAction(data: {
     email: string;
     password: string;
     agentId?: string | null;
-}) {
+}): Promise<{ error?: string; code?: "NO_SUBSCRIPTION" | "INACTIVE" | "QUOTA_EXCEEDED"; success?: boolean; client?: any }> {
     const session = await auth.api.getSession({ headers: await headers() });
     if (!session || (session.user as any).role !== "ADMIN") {
         return { error: "Unauthorized access." };
@@ -42,7 +42,7 @@ export async function createClientAction(data: {
         const existing = await prisma.user.findUnique({ where: { email } });
         if (existing) return { error: "A user with this email already exists." };
         const quota = await checkClientQuota(agencyId);
-if (!quota.ok) return { error: quota.error };
+if (!quota.ok) return { error: quota.error, code: quota.code };
 
         const hashedPassword = await hashPassword(password);
 

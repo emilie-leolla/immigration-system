@@ -74,6 +74,7 @@ model Payment {
   subscription         Subscription   @relation(fields: [subscriptionId], references: [id])
   targetPlan           Plan?          @relation("TargetPlanPayments", fields: [targetPlanId], references: [id])
 
+  @@index([subscriptionId])
   @@map("payment")
 }
 
@@ -94,6 +95,7 @@ model User {
   nationality        String?
   numberOfChildren   Int               @default(0)
   phoneNumber        String?
+  profession         String?
   profileCompleted   Boolean           @default(false)
   role               Role              @default(CLIENT)
   status             UserStatus        @default(ACTIVE)
@@ -113,6 +115,7 @@ model User {
   assignedClients    User[]            @relation("AgentClients")
 
   @@index([agencyId])
+  @@index([agentId])
   @@map("user")
 }
 
@@ -181,6 +184,8 @@ model Application {
   steps                 ApplicationStep[]
 
   @@index([agencyId])
+  @@index([clientId])
+  @@index([agentId])
 }
 
 model Message {
@@ -191,6 +196,8 @@ model Message {
   senderId    String
   Procedure   ApplicationStep @relation(fields: [procedureId], references: [id])
   sender      User            @relation(fields: [senderId], references: [id])
+
+  @@index([procedureId])
 }
 
 model OfficialMessage {
@@ -202,6 +209,9 @@ model OfficialMessage {
   createdAt  DateTime @default(now())
   receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
   sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+
+  @@index([receiverId])
+  @@index([senderId])
 }
 
 model Document {
@@ -217,6 +227,8 @@ model Document {
 
   Procedure ApplicationStep @relation(fields: [procedureId], references: [id])
   uploader  User            @relation(fields: [uploaderId], references: [id])
+
+  @@index([procedureId])
 }
 
 model AuditLog {
@@ -232,6 +244,7 @@ model AuditLog {
   author    User?    @relation("AuthorLogs", fields: [userId], references: [id])
 
   @@index([agencyId])
+  @@index([userId])
 }
 
 model ApplicationStep {
@@ -251,6 +264,7 @@ model ApplicationStep {
   application       Application          @relation(fields: [applicationId], references: [id])
   subSteps          ApplicationSubStep[]
 
+  @@index([applicationId])
   @@map("Procedure")
 }
 
