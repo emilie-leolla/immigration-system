@@ -83,6 +83,7 @@ export async function createPlanAction(formData: FormData) {
     const priceFcfa = parseInt((formData.get("priceFcfa") as string) || "0", 10);
     const maxAgents = parseOptionalInt(formData.get("maxAgents"));
     const maxClients = parseOptionalInt(formData.get("maxClients"));
+    const maxWorkflows = parseOptionalInt(formData.get("maxWorkflows"));
     const isPublic = formData.get("isPublic") === "on";
 
     if (!name || !slug) return { error: "Name and slug are required." };
@@ -93,7 +94,7 @@ export async function createPlanAction(formData: FormData) {
         if (existing) return { error: "A plan with this slug already exists." };
 
         const plan = await prisma.plan.create({
-            data: { name, slug, priceFcfa, maxAgents, maxClients, isPublic },
+            data: { name, slug, priceFcfa, maxAgents, maxClients, maxWorkflows, isPublic },
         });
 
         await prisma.auditLog.create({
@@ -121,6 +122,7 @@ export async function updatePlanAction(planId: string, formData: FormData) {
     const priceFcfa = parseInt((formData.get("priceFcfa") as string) || "0", 10);
     const maxAgents = parseOptionalInt(formData.get("maxAgents"));
     const maxClients = parseOptionalInt(formData.get("maxClients"));
+    const maxWorkflows = parseOptionalInt(formData.get("maxWorkflows"));
     const isPublic = formData.get("isPublic") === "on";
 
     if (!name) return { error: "Name is required." };
@@ -132,7 +134,7 @@ export async function updatePlanAction(planId: string, formData: FormData) {
 
         await prisma.plan.update({
             where: { id: planId },
-            data: { name, priceFcfa, maxAgents, maxClients, isPublic },
+            data: { name, priceFcfa, maxAgents, maxClients, maxWorkflows, isPublic },
         });
 
         await prisma.auditLog.create({

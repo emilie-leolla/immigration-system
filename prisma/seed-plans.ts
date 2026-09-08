@@ -2,7 +2,7 @@ import "dotenv/config";
 import prisma from "../lib/prisma";
 
 const PLANS = [
-    { name: "Gratuit", slug: "free", priceFcfa: 0, maxAgents: 1, maxClients: 10, isPublic: true },
+    { name: "Gratuit", slug: "free", priceFcfa: 0, maxAgents: 1, maxClients: 10, maxWorkflows: 1, isPublic: true },
     { name: "Standard", slug: "standard", priceFcfa: 25000, maxAgents: 4, maxClients: 100, isPublic: true },
     { name: "Pro", slug: "pro", priceFcfa: 100000, maxAgents: null, maxClients: 1000, isPublic: true },
     { name: "Sur mesure", slug: "custom", priceFcfa: 0, maxAgents: null, maxClients: null, isPublic: false },

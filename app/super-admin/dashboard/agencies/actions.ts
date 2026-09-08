@@ -161,6 +161,7 @@ export async function createAgencyAction(formData: FormData) {
                     priceFcfa: 0,
                     maxAgents: 1,
                     maxClients: 10,
+                    maxWorkflows: 1,
                     isPublic: true,
                 },
             });

@@ -24,6 +24,7 @@ interface Plan {
     priceFcfa: number;
     maxAgents: number | null;
     maxClients: number | null;
+    maxWorkflows: number | null;
     isPublic: boolean;
     _count: { subscriptions: number };
 }
@@ -128,6 +129,7 @@ export default function PlanManager({ initialPlans }: { initialPlans: Plan[] }) 
                             <div className="flex flex-wrap gap-2 text-xs font-bold text-gray-500">
                                 <span className="px-2 py-1 bg-gray-100 rounded-lg">Agents: {plan.maxAgents ?? "∞"}</span>
                                 <span className="px-2 py-1 bg-gray-100 rounded-lg">Clients: {plan.maxClients ?? "∞"}</span>
+                                <span className="px-2 py-1 bg-gray-100 rounded-lg">Workflows: {plan.maxWorkflows ?? "∞"}</span>
                             </div>
                             <div className="flex items-center justify-between pt-2 border-t border-gray-50">
                                 <span className={`text-xs font-black uppercase px-2 py-1 rounded ${plan.isPublic ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}>
@@ -168,7 +170,7 @@ export default function PlanManager({ initialPlans }: { initialPlans: Plan[] }) 
                             <Label>Price (FCFA / year)</Label>
                             <Input name="priceFcfa" type="number" min={0} required disabled={isPending} />
                         </div>
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-3 gap-3">
                             <div className="space-y-1.5">
                                 <Label>Max agents</Label>
                                 <Input name="maxAgents" type="number" min={0} placeholder="Unlimited" disabled={isPending} />
@@ -176,6 +178,10 @@ export default function PlanManager({ initialPlans }: { initialPlans: Plan[] }) 
                             <div className="space-y-1.5">
                                 <Label>Max clients</Label>
                                 <Input name="maxClients" type="number" min={0} placeholder="Unlimited" disabled={isPending} />
+                            </div>
+                            <div className="space-y-1.5">
+                                <Label>Max workflows</Label>
+                                <Input name="maxWorkflows" type="number" min={0} placeholder="Unlimited" disabled={isPending} />
                             </div>
                         </div>
                         <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
@@ -219,7 +225,7 @@ export default function PlanManager({ initialPlans }: { initialPlans: Plan[] }) 
                                 <Label>Price (FCFA / year)</Label>
                                 <Input name="priceFcfa" type="number" min={0} required disabled={isPending} defaultValue={editingPlan.priceFcfa} />
                             </div>
-                            <div className="grid grid-cols-2 gap-3">
+                            <div className="grid grid-cols-3 gap-3">
                                 <div className="space-y-1.5">
                                     <Label>Max agents</Label>
                                     <Input name="maxAgents" type="number" min={0} placeholder="Unlimited" disabled={isPending} defaultValue={editingPlan.maxAgents ?? ""} />
@@ -227,6 +233,10 @@ export default function PlanManager({ initialPlans }: { initialPlans: Plan[] }) 
                                 <div className="space-y-1.5">
                                     <Label>Max clients</Label>
                                     <Input name="maxClients" type="number" min={0} placeholder="Unlimited" disabled={isPending} defaultValue={editingPlan.maxClients ?? ""} />
+                                </div>
+                                <div className="space-y-1.5">
+                                    <Label>Max workflows</Label>
+                                    <Input name="maxWorkflows" type="number" min={0} placeholder="Unlimited" disabled={isPending} defaultValue={editingPlan.maxWorkflows ?? ""} />
                                 </div>
                             </div>
                             <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
@@ -264,4 +274,4 @@ export default function PlanManager({ initialPlans }: { initialPlans: Plan[] }) 
             )}
         </div>
     );
-}
+}

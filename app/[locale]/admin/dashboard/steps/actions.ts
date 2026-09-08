@@ -8,6 +8,7 @@ import { getAgencyTemplates, getTemplateSteps } from "@/lib/steps-server";
 import { StepDefinition, APP_STEP_SEQUENCE, STEP_LABELS } from "@/lib/steps";
 import { ProcedureType } from "@prisma/client";
 import { getTranslations } from "next-intl/server";
+import { checkWorkflowQuota } from "@/lib/subscription";
 
 async function requireAdmin() {
     const session = await auth.api.getSession({ headers: await headers() });
@@ -23,11 +24,19 @@ export async function getTemplates() {
     return { templates: await getAgencyTemplates(ctx.agencyId) };
 }
 
-export async function createTemplateAction(name: string, description: string) {
+export async function createTemplateAction(
+    name: string,
+    description: string
+): Promise<{ error?: string; code?: "NO_SUBSCRIPTION" | "INACTIVE" | "QUOTA_EXCEEDED"; success?: boolean; templateId?: string }> {
     const ctx = await requireAdmin();
     if (!ctx) return { error: "Unauthorized access." };
 
     if (!name || !name.trim()) return { error: "Give this workflow a name." };
+
+    const quota = await checkWorkflowQuota(ctx.agencyId);
+    if (!quota.ok) {
+        return { error: quota.error, code: quota.code };
+    }
 
     try {
         // Clone the agency's current "Default" workflow as the starting

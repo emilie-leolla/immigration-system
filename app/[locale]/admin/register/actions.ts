@@ -169,6 +169,7 @@ export async function registerAgencyAdminAction(
                     priceFcfa: 0,
                     maxAgents: 1,
                     maxClients: 10,
+                    maxWorkflows: 1,
                     isPublic: true,
                 },
             });

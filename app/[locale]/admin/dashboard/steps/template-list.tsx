@@ -27,6 +27,7 @@ import { createTemplateAction, deleteTemplateAction } from "./actions";
 import type { TemplateSummary } from "@/lib/steps-server";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import { useUpgradeDialog } from "@/app/[locale]/admin/dashboard/upgrade-dialog-context";
 
 export default function TemplateList({
     initialTemplates,
@@ -36,6 +37,7 @@ export default function TemplateList({
     const t = useTranslations("adminSteps");
     const locale = useLocale();
     const router = useRouter();
+    const { openUpgradeDialog } = useUpgradeDialog();
 
     const [templates, setTemplates] = useState(initialTemplates);
     const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -57,6 +59,11 @@ export default function TemplateList({
             const result = await createTemplateAction(name, description);
 
             if (result?.error) {
+                if (result.code === "QUOTA_EXCEEDED") {
+                    setIsCreateOpen(false);
+                    openUpgradeDialog();
+                    return;
+                }
                 setError(result.error);
                 return;
             }

@@ -42,6 +42,72 @@ const DOCUMENT_TYPE_OPTIONS: { value: string; label: string }[] = [
     { value: "OTHER", label: "Other Document" }
 ];
 
+/**
+ * Scopes the document-type dropdown to whatever specific documents were
+ * configured as required for THIS step (step.requiredDocuments, a list of
+ * free-text names set in the workflow template editor) — instead of always
+ * showing the full generic 14-category list regardless of what was set up.
+ *
+ * If the step has no specific required documents configured, falls back to
+ * the full list, since there's nothing more specific to narrow it down to.
+ */
+function getDocumentOptionsForStep(
+    step: { requiredDocuments?: string[] | null }
+): { value: string; label: string }[] {
+    const required = step.requiredDocuments;
+
+    if (!required || required.length === 0) {
+        return DOCUMENT_TYPE_OPTIONS;
+    }
+
+    const matched: { value: string; label: string }[] = [];
+    const seenValues = new Set<string>();
+
+    for (const docName of required) {
+        const normalized = docName.trim().toLowerCase();
+        if (!normalized) continue;
+
+        const builtInMatch = DOCUMENT_TYPE_OPTIONS.find((opt) => {
+            const optLabel = opt.label.toLowerCase();
+            return (
+                optLabel === normalized ||
+                optLabel.includes(normalized) ||
+                normalized.includes(optLabel)
+            );
+        });
+
+        if (builtInMatch) {
+            if (!seenValues.has(builtInMatch.value)) {
+                matched.push(builtInMatch);
+                seenValues.add(builtInMatch.value);
+            }
+        } else {
+            // No built-in category matches this custom document name.
+            // Document.type in the database only accepts the fixed enum
+            // values above, so this still saves as OTHER — but the
+            // dropdown shows the admin's actual wording, and
+            // handleFileUpload below decodes this composite value back
+            // into { type: "OTHER", label: docName } at save time.
+            const customValue = `OTHER::${docName}`;
+            if (!seenValues.has(customValue)) {
+                matched.push({ value: customValue, label: docName });
+                seenValues.add(customValue);
+            }
+        }
+    }
+
+    // Always keep a plain "Other" option available as a fallback for
+    // anything unexpected the client needs to upload outside the
+    // configured checklist.
+    if (!seenValues.has("OTHER")) {
+        matched.push(
+            DOCUMENT_TYPE_OPTIONS.find((o) => o.value === "OTHER")!
+        );
+    }
+
+    return matched;
+}
+
 // Built-in step types where the whole point of the step IS getting a
 // document from the client.
 const DOCUMENT_BEARING_STEP_TYPES = [
@@ -161,9 +227,14 @@ export default function StepManagement({
     try {
         setUploadingStepId(stepId);
 
-        const type = docType[stepId] || "OTHER";
+        const rawType = docType[stepId] || "OTHER";
+
+        const [type, customLabel] = rawType.startsWith("OTHER::")
+            ? ["OTHER", rawType.slice("OTHER::".length)]
+            : [rawType, undefined];
 
         const label =
+            customLabel ||
             DOCUMENT_TYPE_OPTIONS.find(
                 (o) => o.value === type
             )?.label || file.name;
@@ -894,12 +965,16 @@ export default function StepManagement({
 
                                                             <div className="relative">
 
+                                                                {(() => {
+                                                                    const stepDocOptions = getDocumentOptionsForStep(step);
+                                                                    return (
                                                                 <select
                                                                     value={
                                                                         docType[
                                                                             step
                                                                                 .id
                                                                         ] ||
+                                                                        stepDocOptions[0]?.value ||
                                                                         "OTHER"
                                                                     }
                                                                     onChange={(
@@ -919,7 +994,7 @@ export default function StepManagement({
                                                                     }
                                                                     className="appearance-none text-xs font-bold pl-3 pr-7 py-2 border border-gray-200 rounded-lg bg-white text-gray-700 cursor-pointer"
                                                                 >
-                                                                    {DOCUMENT_TYPE_OPTIONS.map(
+                                                                    {stepDocOptions.map(
                                                                         (
                                                                             opt
                                                                         ) => (
@@ -938,6 +1013,8 @@ export default function StepManagement({
                                                                         )
                                                                     )}
                                                                 </select>
+                                                                    );
+                                                                })()}
 
                                                                 <ChevronDown className="h-3 w-3 text-gray-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
                                                             </div>
