@@ -778,8 +778,23 @@
       "documentsMonitoring": "Suivi des documents",
       "systemLogs": "Journaux système",
       "billing": "Facturation",
+      "contactSupport": "Contacter le support",
       "systemSettings": "Paramètres système"
     }
+  },
+  "adminSupport": {
+    "title": "Contacter le support",
+    "subtitle": "Une question ou un problème ? Envoyez-nous un message et nous vous répondrons rapidement.",
+    "subjectLabel": "Objet",
+    "subjectPlaceholder": "ex. Question sur la facturation",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Décrivez votre question ou votre problème en détail...",
+    "send": "Envoyer le message",
+    "sending": "Envoi en cours...",
+    "sendAnother": "Envoyer un autre message",
+    "successTitle": "Message envoyé",
+    "successMessage": "Votre message a été envoyé à notre équipe de support. Nous vous répondrons dans les meilleurs délais.",
+    "errorUnexpected": "Une erreur inattendue s'est produite. Veuillez réessayer."
   },
   "adminSearch": {
     "placeholder": "Demandez n'importe quoi — ex. « trouver John Doe » ou « clients qui sont en attente »",
@@ -1380,6 +1395,12 @@
     "PASSPORT_SUBMISSION": "Soumission du passeport et traitement du visa"
   },
   "auditLog": {
+    "agencyCreated": "Agence {name} ({email}) créée.",
+    "agencyCreatedBySuperAdmin": "Agence {agencyName} créée avec l'administrateur {adminName} ({adminEmail}) par le Super Admin.",
+    "agencyDeleted": "Agence {name} supprimée définitivement par le Super Admin.",
+    "agencyPlanChanged": "Forfait de l'agence {agencyName} changé vers {planName} par le Super Admin.",
+    "agencyPlanSetBySuperAdmin": "Forfait de l'agence {agencyName} défini sur {planName} par le Super Admin.",
+    "agencyUpdated": "Agence mise à jour vers {name} ({email}) par le Super Admin.",
     "agentCreated": "Agent {name} ({email}) créé par l'administrateur.",
     "agentSuspended": "Agent {name} ({email}) suspendu par l'administrateur.",
     "agentUnsuspended": "Agent {name} ({email}) réactivé par l'administrateur.",
@@ -1444,7 +1465,11 @@
     "APPLICATION_UNLOCKED": "Demande déverrouillée",
     "CANCEL_PLAN_DOWNGRADE": "Annuler la rétrogradation de forfait",
     "SCHEDULE_PLAN_DOWNGRADE": "Programmer une rétrogradation de forfait",
-    "UPGRADE_SUBSCRIPTION": "Mise à niveau de l'abonnement"
+    "UPGRADE_SUBSCRIPTION": "Mise à niveau de l'abonnement",
+    "CREATE_PLAN": "Création de forfait",
+    "UPDATE_PLAN": "Mise à jour de forfait",
+    "DELETE_PLAN": "Suppression de forfait",
+    "UPDATE_PRICING_SETTINGS": "Mise à jour de la tarification"
   },
   "superAdminDashboard": {
     "eyebrow": "Administration globale",

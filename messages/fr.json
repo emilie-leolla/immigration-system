@@ -778,8 +778,23 @@
       "documentsMonitoring": "Suivi des documents",
       "systemLogs": "Journaux système",
       "billing": "Facturation",
+      "contactSupport": "Contacter le support",
       "systemSettings": "Paramètres système"
     }
+  },
+  "adminSupport": {
+    "title": "Contacter le support",
+    "subtitle": "Une question ou un problème ? Envoyez-nous un message et nous vous répondrons rapidement.",
+    "subjectLabel": "Objet",
+    "subjectPlaceholder": "ex. Question sur la facturation",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Décrivez votre question ou votre problème en détail...",
+    "send": "Envoyer le message",
+    "sending": "Envoi en cours...",
+    "sendAnother": "Envoyer un autre message",
+    "successTitle": "Message envoyé",
+    "successMessage": "Votre message a été envoyé à notre équipe de support. Nous vous répondrons dans les meilleurs délais.",
+    "errorUnexpected": "Une erreur inattendue s'est produite. Veuillez réessayer."
   },
   "adminSearch": {
     "placeholder": "Demandez n'importe quoi — ex. « trouver John Doe » ou « clients qui sont en attente »",
@@ -830,6 +845,18 @@
     }
   },
   "adminSettings": {
+    "pricing": {
+      "title": "Tarification du forfait personnalisé",
+      "description": "Ces montants déterminent le prix qu'une agence voit en créant un forfait personnalisé sur la page de facturation.",
+      "baseFeeLabel": "Frais de base (FCFA)",
+      "perAgentLabel": "Prix par agent (FCFA)",
+      "perClientLabel": "Prix par client (FCFA)",
+      "exampleText": "Exemple : {agents} agents + {clients} clients = {total} FCFA",
+      "save": "Enregistrer la tarification",
+      "saving": "Enregistrement...",
+      "successToast": "Tarification mise à jour avec succès",
+      "errorToast": "Une erreur inattendue s'est produite."
+    },
     "eyebrow": "Configuration système",
     "title": "Paramètres",
     "subtitle": "Gérer les paramètres système globaux.",
@@ -864,6 +891,35 @@
     "changePlan": "Changer de forfait",
     "paymentHistory": "Historique des paiements",
     "noPayments": "Aucun paiement pour l'instant.",
+    "custom": {
+      "cardTitle": "Créer un forfait personnalisé",
+      "cardDescription": "Choisissez exactement le nombre d'agents et de clients dont vous avez besoin.",
+      "customizeButton": "Personnaliser",
+      "dialogTitle": "Créez votre forfait personnalisé",
+      "dialogDescription": "Définissez vos limites d'agents et de clients — le prix se met à jour instantanément.",
+      "numAgentsLabel": "Nombre d'agents",
+      "numClientsLabel": "Nombre de clients",
+      "summaryTitle": "Votre forfait personnalisé",
+      "agentsCount": "{count, plural, one {# agent} other {# agents}}",
+      "clientsCount": "{count, plural, one {# client} other {# clients}}",
+      "selectPaymentMethod": "Sélectionnez le mode de paiement",
+      "mtnTitle": "MTN MoMo",
+      "orangeTitle": "Orange Money",
+      "mobileMoneySubtitle": "Mobile Money",
+      "cardMethodTitle": "Carte bancaire",
+      "cardMethodSubtitle": "Visa / Mastercard",
+      "mtnNumberLabel": "Numéro MTN Mobile Money",
+      "orangeNumberLabel": "Numéro Orange Money",
+      "phoneCountryLabel": "Cameroun (+237)",
+      "phoneHint": "Une demande de paiement apparaîtra sur ce téléphone. Entrez votre code PIN pour valider.",
+      "cardPaymentTitle": "Paiement par carte via CamPay",
+      "cardPaymentDescription": "Vous serez redirigé vers la passerelle sécurisée CamPay pour finaliser le paiement par Visa ou Mastercard.",
+      "errorMinimum": "Saisissez au moins 1 agent et 1 client.",
+      "errorPhone": "Veuillez saisir un numéro de téléphone camerounais valide (ex. 6XX XX XX XX).",
+      "securityNote": "Paiement sécurisé et chiffré 256 bits via CamPay",
+      "payButton": "Payer {amount} FCFA",
+      "processingPayment": "Traitement du paiement..."
+    },
     "upgrade": {
       "downgradeScheduled": "Une rétrogradation vers <strong>{planName}</strong> est prévue à la fin de votre période de facturation actuelle.",
       "confirmWorkflowNameLabel": "Saisissez le nom du workflow pour confirmer",
@@ -1450,7 +1506,11 @@
     "APPLICATION_UNLOCKED": "Demande déverrouillée",
     "CANCEL_PLAN_DOWNGRADE": "Annuler la rétrogradation de forfait",
     "SCHEDULE_PLAN_DOWNGRADE": "Programmer une rétrogradation de forfait",
-    "UPGRADE_SUBSCRIPTION": "Mise à niveau de l'abonnement"
+    "UPGRADE_SUBSCRIPTION": "Mise à niveau de l'abonnement",
+    "CREATE_PLAN": "Création de forfait",
+    "UPDATE_PLAN": "Mise à jour de forfait",
+    "DELETE_PLAN": "Suppression de forfait",
+    "UPDATE_PRICING_SETTINGS": "Mise à jour de la tarification"
   },
   "superAdminDashboard": {
     "eyebrow": "Administration globale",

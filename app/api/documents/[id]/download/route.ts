@@ -70,7 +70,11 @@ export async function GET(
 
         // Old UploadThing documents
         if (document.fileUrl) {
-            return NextResponse.redirect(document.fileUrl);
+            const absoluteUrl = document.fileUrl.startsWith("http")
+                ? document.fileUrl
+                : new URL(document.fileUrl, request.url).toString();
+
+            return NextResponse.redirect(absoluteUrl);
         }
 
         return new NextResponse("File unavailable", {

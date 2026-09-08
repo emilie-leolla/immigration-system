@@ -63,6 +63,7 @@ const adminSidebarItems = [
         { icon: "FolderSearch", label: t("nav.documentsMonitoring"), href: "/admin/dashboard/documents" },
         { icon: "List", label: t("nav.systemLogs"), href: "/admin/dashboard/logs" },
         { icon: "CreditCard", label: t("nav.billing"), href: "/admin/dashboard/billing" },
+        { icon: "MessageSquare", label: t("nav.contactSupport"), href: "/admin/dashboard/support" },
         { icon: "Settings", label: t("nav.systemSettings"), href: "/admin/dashboard/settings" }
     ];
     return (

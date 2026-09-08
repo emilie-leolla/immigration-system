@@ -64,8 +64,8 @@ function SignInForm() {
                 <Image
                     src={LOGOS.login}
                     alt="Procédure Facile"
-                    width={600}
-                    height={300}
+                    width={1000}
+                    height={400}
                     className="h-24 w-auto mx-auto mb-4 object-contain"
                     priority
                 />

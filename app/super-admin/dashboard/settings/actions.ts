@@ -4,6 +4,49 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { getPricingSettings } from "@/lib/pricing";
+
+export { getPricingSettings };
+
+export async function updatePricingSettingsAction(formData: FormData) {
+    const session = await requireSuperAdmin();
+    if (!session) return { error: "Unauthorized access." };
+
+    const basePriceFcfa = parseInt((formData.get("basePriceFcfa") as string) || "", 10);
+    const pricePerAgentFcfa = parseInt((formData.get("pricePerAgentFcfa") as string) || "", 10);
+    const pricePerClientFcfa = parseInt((formData.get("pricePerClientFcfa") as string) || "", 10);
+
+    if (
+        Number.isNaN(basePriceFcfa) || basePriceFcfa < 0 ||
+        Number.isNaN(pricePerAgentFcfa) || pricePerAgentFcfa < 0 ||
+        Number.isNaN(pricePerClientFcfa) || pricePerClientFcfa < 0
+    ) {
+        return { error: "All amounts must be positive numbers." };
+    }
+
+    try {
+        await prisma.pricingSettings.upsert({
+            where: { id: "singleton" },
+            update: { basePriceFcfa, pricePerAgentFcfa, pricePerClientFcfa },
+            create: { id: "singleton", basePriceFcfa, pricePerAgentFcfa, pricePerClientFcfa },
+        });
+
+        await prisma.auditLog.create({
+            data: {
+                action: "UPDATE_PRICING_SETTINGS",
+                details: `Custom plan pricing updated by Super Admin: base=${basePriceFcfa}, agent=${pricePerAgentFcfa}, client=${pricePerClientFcfa} FCFA.`,
+                userId: session.user.id,
+            },
+        });
+
+        revalidatePath("/super-admin/dashboard/settings");
+        revalidatePath("/admin/dashboard/billing");
+        return { success: true };
+    } catch (e: any) {
+        console.error("Update pricing settings error:", e);
+        return { error: "Failed to update pricing settings." };
+    }
+}
 
 async function requireSuperAdmin() {
     const session = await auth.api.getSession({ headers: await headers() });
@@ -166,4 +209,4 @@ export async function deletePlanAction(planId: string) {
         console.error("Delete plan error:", e);
         return { error: e.message || "Failed to delete plan." };
     }
-}
+}

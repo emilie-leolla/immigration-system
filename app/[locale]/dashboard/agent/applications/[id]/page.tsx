@@ -80,7 +80,7 @@ export default async function AgentApplicationManagementPage({ params }: { param
             {/* Header / Navigation */}
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-10 pb-12 border-b-2 border-gray-100">
                 <div className="space-y-6 flex-1">
-                    <Link href="/dashboard/agent/applications" className="inline-flex items-center gap-2 group text-gray-400 hover:text-[#1E3A8A] transition-all">
+                    <Link href="/dashboard/agent/clients" className="inline-flex items-center gap-2 group text-gray-400 hover:text-[#1E3A8A] transition-all">
                         <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
                         <span className="text-[10px] font-black uppercase tracking-widest leading-none">{t("backToWorkspace")}</span>
                     </Link>

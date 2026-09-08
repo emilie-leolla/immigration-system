@@ -26,11 +26,15 @@ import {
     DialogDescription,
 } from "@/components/ui/dialog";
 import { useTranslations, useLocale } from "next-intl";
+import { TablePagination } from "@/components/ui/table-pagination";
+
+const PAGE_SIZE = 10;
 
 interface DocumentItem {
     id: string;
     name: string;
     fileUrl: string;
+    storageKey?: string | null;
     type: string;
     status: string;
     uploadedAt: Date;
@@ -70,6 +74,7 @@ export default function DocumentTable({
     const [loadingId, setLoadingId] = useState<string | null>(null);
     const [previewDoc, setPreviewDoc] =
         useState<DocumentItem | null>(null);
+    const [page, setPage] = useState(1);
 
     const filteredDocuments = documents.filter((doc) => {
         const search = searchTerm.toLowerCase();
@@ -85,6 +90,17 @@ export default function DocumentTable({
 
         return matchesSearch && matchesStatus;
     });
+
+    React.useEffect(() => {
+        setPage(1);
+    }, [searchTerm, statusFilter]);
+
+    const totalPages = Math.max(1, Math.ceil(filteredDocuments.length / PAGE_SIZE));
+    const safePage = Math.min(page, totalPages);
+    const paginatedDocuments = filteredDocuments.slice(
+        (safePage - 1) * PAGE_SIZE,
+        safePage * PAGE_SIZE
+    );
 
     const handleStatusChange = async (
         docId: string,
@@ -162,7 +178,7 @@ export default function DocumentTable({
     };
 
     const getFileExtension = (doc: DocumentItem) => {
-        const source = doc.fileUrl || doc.name;
+        const source = doc.storageKey || doc.fileUrl || doc.name;
 
         const cleanSource = source.split("?")[0];
 
@@ -272,7 +288,7 @@ export default function DocumentTable({
 
                     <tbody className="divide-y divide-gray-100">
 
-                        {filteredDocuments.map((doc) => (
+                        {paginatedDocuments.map((doc) => (
 
                             <tr
                                 key={doc.id}
@@ -437,6 +453,17 @@ export default function DocumentTable({
                 )}
 
             </div>
+
+            {filteredDocuments.length > PAGE_SIZE && (
+                <div className="px-6 lg:px-8 pb-6 pt-2">
+                    <TablePagination
+                        page={safePage}
+                        totalItems={filteredDocuments.length}
+                        pageSize={PAGE_SIZE}
+                        onPageChange={setPage}
+                    />
+                </div>
+            )}
 
             {/* Preview Modal */}
             <Dialog

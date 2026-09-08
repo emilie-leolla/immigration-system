@@ -9,7 +9,7 @@ export async function sendEmail({
     html,
     fromName
 }: {
-    to: string;
+    to: string | string[];
     subject: string;
     html: string;
     fromName?: string;

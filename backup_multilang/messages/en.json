@@ -778,8 +778,23 @@
       "documentsMonitoring": "Documents Monitoring",
       "systemLogs": "System Logs",
       "billing": "Billing",
+      "contactSupport": "Contact Support",
       "systemSettings": "System Settings"
     }
+  },
+  "adminSupport": {
+    "title": "Contact Support",
+    "subtitle": "Have a question or an issue? Send us a message and we'll get back to you.",
+    "subjectLabel": "Subject",
+    "subjectPlaceholder": "e.g. Question about billing",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Describe your question or issue in detail...",
+    "send": "Send Message",
+    "sending": "Sending...",
+    "sendAnother": "Send Another Message",
+    "successTitle": "Message Sent",
+    "successMessage": "Your message has been sent to our support team. We'll get back to you as soon as possible.",
+    "errorUnexpected": "An unexpected error occurred. Please try again."
   },
   "adminSearch": {
     "placeholder": "Ask anything — e.g. \"find John Doe\" or \"clients who are pending\"",
@@ -1380,6 +1395,12 @@
     "PASSPORT_SUBMISSION": "Passport Submission & Visa Processing"
   },
   "auditLog": {
+    "agencyCreated": "Agency {name} ({email}) created.",
+    "agencyCreatedBySuperAdmin": "Agency {agencyName} created with admin {adminName} ({adminEmail}) by Super Admin.",
+    "agencyDeleted": "Agency {name} permanently deleted by Super Admin.",
+    "agencyPlanChanged": "Plan for agency {agencyName} changed to {planName} by Super Admin.",
+    "agencyPlanSetBySuperAdmin": "Plan for agency {agencyName} set to {planName} by Super Admin.",
+    "agencyUpdated": "Agency updated to {name} ({email}) by Super Admin.",
     "agentCreated": "Agent {name} ({email}) created by Admin.",
     "agentSuspended": "Agent {name} ({email}) suspended by Admin.",
     "agentUnsuspended": "Agent {name} ({email}) unsuspended by Admin.",
@@ -1444,7 +1465,11 @@
     "APPLICATION_UNLOCKED": "Application Unlocked",
     "CANCEL_PLAN_DOWNGRADE": "Cancel Plan Downgrade",
     "SCHEDULE_PLAN_DOWNGRADE": "Schedule Plan Downgrade",
-    "UPGRADE_SUBSCRIPTION": "Upgrade Subscription"
+    "UPGRADE_SUBSCRIPTION": "Upgrade Subscription",
+    "CREATE_PLAN": "Create Plan",
+    "UPDATE_PLAN": "Update Plan",
+    "DELETE_PLAN": "Delete Plan",
+    "UPDATE_PRICING_SETTINGS": "Update Pricing Settings"
   },
   "superAdminDashboard": {
     "eyebrow": "Global Administration",

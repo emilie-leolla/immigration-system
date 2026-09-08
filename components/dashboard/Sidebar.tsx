@@ -268,9 +268,18 @@ export function Sidebar({
                     Nav links
                 ====================================================== */}
                 <nav className="flex-1 overflow-y-auto px-3 xl:px-4 py-4 space-y-0.5">
-                    {navigationItems.map((item) => {
+                    {navigationItems.map((item, index) => {
                         /*
-                         * Exact route OR child route.
+                         * Exact route OR child route — EXCEPT for the
+                         * first nav item (Dashboard/overview), which must
+                         * always match exactly. Position-based instead of
+                         * comparing against a guessed "homeHref" string,
+                         * since that home path differs per role
+                         * ("/dashboard" for admin, "/dashboard/agent" for
+                         * agents, "/super-admin/dashboard" for super
+                         * admin) — a mismatch there silently disabled this
+                         * fix for any role whose home path wasn't exactly
+                         * "/dashboard" or "/super-admin/dashboard".
                          *
                          * Example:
                          * /super-admin/agencies
@@ -279,7 +288,7 @@ export function Sidebar({
                          * Both keep "Agences" active.
                          */
                         const isActive =
-                            item.href === homeHref
+                            index === 0
                                 ? pathname === item.href
                                 : pathname === item.href ||
                                   pathname.startsWith(`${item.href}/`);

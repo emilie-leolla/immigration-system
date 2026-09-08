@@ -1,4 +1,3 @@
-
 import React from "react";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
@@ -15,7 +14,9 @@ import {
     CreditCard,
 } from "lucide-react";
 import { getAvailablePlans } from "./actions";
+import { getPricingSettings } from "@/lib/pricing";
 import UpgradePlanSection from "./upgrade-plan-section";
+import CustomPlanSection from "./custom-plan-section";
 import { getTranslations } from "next-intl/server";
 
 export const dynamic = "force-dynamic";
@@ -42,6 +43,7 @@ export default async function BillingPage() {
         agentCount,
         clientCount,
         plans,
+        pricingSettings,
     ] = await Promise.all([
         prisma.subscription.findUnique({
             where: {
@@ -74,6 +76,7 @@ export default async function BillingPage() {
         }),
 
         getAvailablePlans(),
+        getPricingSettings(),
     ]);
 
     if (!subscription) {
@@ -256,6 +259,8 @@ export default async function BillingPage() {
                         subscription.pendingPlan as any
                     }
                 />
+
+                <CustomPlanSection pricing={pricingSettings as any} />
             </div>
 
             {/* Payment history */}

@@ -8,6 +8,7 @@ import {
     Briefcase,
     Clock,
     CheckCircle,
+    Users,
     User,
     ExternalLink
 } from "lucide-react";
@@ -50,7 +51,7 @@ export default async function AgentDashboard() {
               ]
           };
 
-    const [assignedApps, inReviewApps, completedApps] =
+    const [assignedApps, inReviewApps, completedApps, totalClients] =
         await Promise.all([
             prisma.application.count({
                 where: scopeFilter
@@ -66,6 +67,11 @@ export default async function AgentDashboard() {
                     ...scopeFilter,
                     status: "APPROVED"
                 }
+            }),
+            prisma.user.count({
+                where: isAdmin
+                    ? { role: "CLIENT", agencyId }
+                    : { role: "CLIENT", agentId: session.user.id }
             })
         ]);
 
@@ -126,7 +132,26 @@ export default async function AgentDashboard() {
                 </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                <div
+                    className="bg-white p-6 shadow-sm border border-gray-100 flex items-center gap-5 transition-all hover:shadow-lg hover:-translate-y-1 group"
+                    style={{ borderRadius: "16px" }}
+                >
+                    <div className="p-4 rounded-2xl bg-purple-50 text-[#1E3A8A] group-hover:bg-purple-500 group-hover:text-white transition-all duration-300">
+                        <Users size={26} />
+                    </div>
+
+                    <div>
+                        <p className="text-[10px] text-gray-400 font-black uppercase tracking-[0.2em]">
+                            {t("totalClients")}
+                        </p>
+
+                        <h3 className="text-3xl font-black text-gray-900 mt-0.5">
+                            {totalClients}
+                        </h3>
+                    </div>
+                </div>
+
                 <div
                     className="bg-white p-6 shadow-sm border border-gray-100 flex items-center gap-5 transition-all hover:shadow-lg hover:-translate-y-1 group"
                     style={{ borderRadius: "16px" }}
@@ -192,7 +217,7 @@ export default async function AgentDashboard() {
                             {t("recentActivity")}
                         </CardTitle>
 
-                        <Link href="/dashboard/agent/applications">
+                        <Link href="/dashboard/agent/clients">
                             <Button className="text-xs font-bold text-blue-600 hover:bg-blue-50">
                                 {t("viewAll")}
                             </Button>

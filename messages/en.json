@@ -778,8 +778,23 @@
       "documentsMonitoring": "Documents Monitoring",
       "systemLogs": "System Logs",
       "billing": "Billing",
+      "contactSupport": "Contact Support",
       "systemSettings": "System Settings"
     }
+  },
+  "adminSupport": {
+    "title": "Contact Support",
+    "subtitle": "Have a question or an issue? Send us a message and we'll get back to you.",
+    "subjectLabel": "Subject",
+    "subjectPlaceholder": "e.g. Question about billing",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Describe your question or issue in detail...",
+    "send": "Send Message",
+    "sending": "Sending...",
+    "sendAnother": "Send Another Message",
+    "successTitle": "Message Sent",
+    "successMessage": "Your message has been sent to our support team. We'll get back to you as soon as possible.",
+    "errorUnexpected": "An unexpected error occurred. Please try again."
   },
   "adminSearch": {
     "placeholder": "Ask anything — e.g. \"find John Doe\" or \"clients who are pending\"",
@@ -830,6 +845,18 @@
     }
   },
   "adminSettings": {
+    "pricing": {
+      "title": "Custom Plan Pricing",
+      "description": "These amounts control the price an agency sees when building a custom plan on the billing page.",
+      "baseFeeLabel": "Base fee (FCFA)",
+      "perAgentLabel": "Price per agent (FCFA)",
+      "perClientLabel": "Price per client (FCFA)",
+      "exampleText": "Example: {agents} agents + {clients} clients = {total} FCFA",
+      "save": "Save Pricing",
+      "saving": "Saving...",
+      "successToast": "Pricing updated successfully",
+      "errorToast": "An unexpected error occurred."
+    },
     "eyebrow": "System Configuration",
     "title": "Settings",
     "subtitle": "Manage global system parameters.",
@@ -864,6 +891,35 @@
     "changePlan": "Change Plan",
     "paymentHistory": "Payment History",
     "noPayments": "No payments yet.",
+    "custom": {
+      "cardTitle": "Build a Custom Plan",
+      "cardDescription": "Choose exactly how many agents and clients you need.",
+      "customizeButton": "Customize",
+      "dialogTitle": "Build Your Custom Plan",
+      "dialogDescription": "Set your agent and client limits — the price updates instantly.",
+      "numAgentsLabel": "Number of Agents",
+      "numClientsLabel": "Number of Clients",
+      "summaryTitle": "Your Custom Plan",
+      "agentsCount": "{count, plural, one {# agent} other {# agents}}",
+      "clientsCount": "{count, plural, one {# client} other {# clients}}",
+      "selectPaymentMethod": "Select Payment Method",
+      "mtnTitle": "MTN MoMo",
+      "orangeTitle": "Orange Money",
+      "mobileMoneySubtitle": "Mobile Money",
+      "cardMethodTitle": "Credit / Debit",
+      "cardMethodSubtitle": "Visa / Mastercard",
+      "mtnNumberLabel": "MTN Mobile Money Number",
+      "orangeNumberLabel": "Orange Money Number",
+      "phoneCountryLabel": "Cameroon (+237)",
+      "phoneHint": "A payment prompt will appear on this phone. Enter your PIN to validate.",
+      "cardPaymentTitle": "Card Payment via CamPay",
+      "cardPaymentDescription": "You will be redirected to the secure CamPay gateway to complete payment with Visa or Mastercard.",
+      "errorMinimum": "Enter at least 1 agent and 1 client.",
+      "errorPhone": "Please enter a valid Cameroon phone number (e.g. 6XX XX XX XX).",
+      "securityNote": "Secured & encrypted 256-bit payment via CamPay",
+      "payButton": "Pay {amount} FCFA",
+      "processingPayment": "Processing payment..."
+    },
     "upgrade": {
       "downgradeScheduled": "A downgrade to <strong>{planName}</strong> is scheduled for the end of your current billing period.",
       "confirmWorkflowNameLabel": "Type the workflow name to confirm",
@@ -1450,7 +1506,11 @@
     "APPLICATION_UNLOCKED": "Application Unlocked",
     "CANCEL_PLAN_DOWNGRADE": "Cancel Plan Downgrade",
     "SCHEDULE_PLAN_DOWNGRADE": "Schedule Plan Downgrade",
-    "UPGRADE_SUBSCRIPTION": "Upgrade Subscription"
+    "UPGRADE_SUBSCRIPTION": "Upgrade Subscription",
+    "CREATE_PLAN": "Create Plan",
+    "UPDATE_PLAN": "Update Plan",
+    "DELETE_PLAN": "Delete Plan",
+    "UPDATE_PRICING_SETTINGS": "Update Pricing Settings"
   },
   "superAdminDashboard": {
     "eyebrow": "Global Administration",

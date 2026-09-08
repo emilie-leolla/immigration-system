@@ -304,7 +304,7 @@ export default function UpgradePlanSection({ plans, currentPlanId, pendingPlan }
   );
 }
 
-function MethodCard({
+export function MethodCard({
   active,
   onClick,
   badgeColor,
@@ -341,4 +341,3 @@ function MethodCard({
     </button>
   );
 }
-

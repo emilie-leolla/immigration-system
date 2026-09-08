@@ -59,6 +59,7 @@ export default async function DocumentMonitoringPage() {
             id: doc.id,
             name: doc.name,
             fileUrl: doc.fileUrl,
+            storageKey: doc.storageKey,
             type: doc.type,
             status: doc.status,
             uploadedAt: doc.uploadedAt,

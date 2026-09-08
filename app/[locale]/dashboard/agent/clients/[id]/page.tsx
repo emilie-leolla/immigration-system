@@ -144,7 +144,7 @@ const client = await prisma.user.findUnique({
                                 </h2>
                                 <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-9">{t("activeCaseFiles")}</p>
                              </div>
-                             <Link href="/dashboard/agent/applications">
+                             <Link href="/dashboard/agent/clients">
                                 <Button variant="outline" className="rounded-2xl text-[10px] font-black uppercase tracking-widest px-6 h-12 shadow-sm border-gray-100 hover:bg-blue-50 hover:text-blue-700 transition-all">
                                     {t("fullRoadmapAdmin")} <ArrowRight className="ml-2 h-4 w-4" />
                                 </Button>
