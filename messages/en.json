@@ -1179,6 +1179,7 @@
     "agentSubtitle": "Welcome back to your workspace.",
     "myProfile": "My Profile",
     "totalProcedures": "Total Procedures",
+    "totalClients": "Total Clients",
     "inReview": "In Review",
     "completed": "Completed",
     "recentActivity": "Recent Activity",
@@ -1572,6 +1573,12 @@
       "title": "Agencies",
       "subtitle": "Manage every agency on the platform and its subscription plan."
     }
+  },
+  "errorBoundary": {
+    "title": "Something went wrong",
+    "description": "This section hit an unexpected error. Your session and the rest of the dashboard are unaffected — try again, or head back to the overview.",
+    "retryButton": "Try Again",
+    "homeButton": "Back to Overview"
   },
   "pagination": {
     "showing": "Showing {start}–{end} of {total}",

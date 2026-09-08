@@ -1179,6 +1179,7 @@
     "agentSubtitle": "Bon retour dans votre espace de travail.",
     "myProfile": "Mon profil",
     "totalProcedures": "Total des procédures",
+    "totalClients": "Total des clients",
     "inReview": "En examen",
     "completed": "Terminé",
     "recentActivity": "Activité récente",
@@ -1572,6 +1573,12 @@
       "title": "Agences",
       "subtitle": "Gérer toutes les agences de la plateforme et leur forfait d’abonnement."
     }
+  },
+  "errorBoundary": {
+    "title": "Une erreur s'est produite",
+    "description": "Cette section a rencontré une erreur inattendue. Votre session et le reste du tableau de bord ne sont pas affectés — réessayez, ou retournez à l'aperçu.",
+    "retryButton": "Réessayer",
+    "homeButton": "Retour à l'aperçu"
   },"pagination": {
         "showing": "Affichage de {start}–{end} sur {total}",
         "previous": "Précédent",
