@@ -1452,6 +1452,20 @@
     "downgradeCancelled": "Agency cancelled a scheduled plan downgrade.",
     "planDowngradeScheduled": "Agency scheduled a downgrade to plan \"{planName}\", effective {date}.",
     "switchedToFreePlan": "Agency switched to the free plan \"{planName}\".",
+    "switchedToCustomPlan": "Agency switched to a custom plan ({numAgents} agents, {numClients} clients).",
+    "userSuspendedBySuperAdmin": "User {name} ({email}) suspended by Super Admin.",
+    "userUnsuspendedBySuperAdmin": "User {name} ({email}) unsuspended by Super Admin.",
+    "userRoleChangedBySuperAdmin": "User {name} ({email}) role changed from {oldRole} to {newRole} by Super Admin.",
+    "userDeletedBySuperAdmin": "User {name} ({email}) deleted by Super Admin.",
+    "pricingSettingsUpdated": "Custom plan pricing updated by Super Admin: base={base}, agent={agent}, client={client} FCFA.",
+    "planCreated": "Plan \"{name}\" created by Super Admin.",
+    "planUpdated": "Plan \"{name}\" updated by Super Admin.",
+    "planDeleted": "Plan \"{name}\" ({slug}) deleted by Super Admin.",
+    "clientUpdatedByAdmin": "Client {name} ({email}) details updated by Admin {adminName}.",
+    "clientUpdatedByAdminWithPasswordReset": "Client {name} ({email}) details updated by Admin {adminName}. Password reset.",
+    "procedureFinalizedByActor": "Procedure {applicationId} ({country}) was finalized and marked COMPLETED for {clientName} ({clientEmail}) by {actorName}.",
+    "userLoggedIn": "{name} ({email}) logged in.",
+    "finalStepApprovedByActor": "{actorName} approved the final step ({stepType}) for {clientName}.",
     "clientCreatedByAdmin": "Client {name} ({email}) created by Admin {adminName}.",
     "clientCreatedByAdminAssigned": "Client {name} ({email}) created by Admin {adminName}. Assigned to agent ID {agentId}.",
     "agentAssignedToClient": "Agent {agentName} assigned to Client {clientName} ({clientEmail}).",
@@ -1477,7 +1491,7 @@
     "applicationCreatedByAgent": "Application ({templateName}) created for {clientName} by {actorName}.",
     "clientUpdatedOwnProfile": "Client updated their full personal profile.",
     "clientCompletedStep": "Client completed step {stepType} for {country} application. Status: {status}",
-    "subscriptionUpgraded": "Agency upgraded to plan \"{planName}\" ({amount} FCFA) via Flutterwave."
+    "subscriptionUpgraded": "Agency upgraded to plan \"{planName}\" ({amount} FCFA) via CamPay."
   },
   "auditActions": {
     "APPLICATION_CREATION": "Application Creation",
@@ -1511,7 +1525,8 @@
     "CREATE_PLAN": "Create Plan",
     "UPDATE_PLAN": "Update Plan",
     "DELETE_PLAN": "Delete Plan",
-    "UPDATE_PRICING_SETTINGS": "Update Pricing Settings"
+    "UPDATE_PRICING_SETTINGS": "Update Pricing Settings",
+    "USER_LOGIN": "User Login"
   },
   "superAdminDashboard": {
     "eyebrow": "Global Administration",

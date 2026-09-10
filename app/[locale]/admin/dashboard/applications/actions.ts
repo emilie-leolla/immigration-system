@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { getAgencyTemplates } from "@/lib/steps-server";
+import { auditDetails } from "@/lib/audit-log";
 import { getTemplateSteps } from "@/lib/steps-server";
 
 export async function getClientsAndTemplates() {
@@ -94,7 +95,7 @@ export async function createApplicationAction(clientId: string, templateId: stri
         await prisma.auditLog.create({
             data: {
                 action: "CREATE_APPLICATION",
-                details: `Application (${template.name}) created for ${client.name} by Admin ${session.user.name}.`,
+                details: auditDetails("applicationCreatedByAdmin", { templateName: template.name, clientName: client.name, adminName: session.user.name }),
                 userId: session.user.id,
                 agencyId,
                 targetId: application.id
@@ -160,7 +161,7 @@ export async function deleteApplicationAction(applicationId: string) {
             await tx.auditLog.create({
                 data: {
                     action: "DELETE_APPLICATION",
-                    details: `Application for ${application.client.name} (${application.country}) permanently deleted by Admin.`,
+                    details: auditDetails("applicationDeleted", { clientName: application.client.name, country: application.country }),
                     userId: session.user.id,
                     agencyId: adminAgencyId
                 }
@@ -222,7 +223,7 @@ export async function updateApplicationAction(
         await prisma.auditLog.create({
             data: {
                 action: "UPDATE_APPLICATION",
-                details: `Application for ${oldApp.client.name} updated by Admin. Changes: ${JSON.stringify(data)}`,
+                details: auditDetails("applicationUpdated", { clientName: oldApp.client.name, changes: JSON.stringify(data) }),
                 userId: session.user.id,
                 agencyId: adminAgencyId
             }

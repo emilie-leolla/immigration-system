@@ -6,6 +6,7 @@ import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { getAgencyStepDefinitions, getTemplateSteps } from "@/lib/steps-server";
 import { ApplicationType } from "@prisma/client";
+import { auditDetails } from "@/lib/audit-log";
 import { hashPassword } from "better-auth/crypto";
 import { checkClientQuota } from "@/lib/subscription";
 export async function createClientAction(formData: FormData) {
@@ -82,9 +83,12 @@ if (!quota.ok) {
         await prisma.auditLog.create({
             data: {
                 action: "CREATE_CLIENT",
-                details: `Client ${name} (${email}) created by ${
-                    isAgent ? "Agent" : "Admin"
-                } ${session.user.name}.`,
+                details: auditDetails("clientCreatedByActor", {
+                    name,
+                    email,
+                    actorRole: isAgent ? "Agent" : "Admin",
+                    actorName: session.user.name,
+                }),
                 userId: session.user.id,
                 agencyId,
                 targetId: newClient.id,
@@ -183,7 +187,13 @@ export async function createApplicationForClientAction(
         await prisma.auditLog.create({
             data: {
                 action: "APPLICATION_CREATION",
-                details: `${(session.user as any).role === "ADMIN" ? "Admin" : "Agent"} ${session.user.name} created a ${data.type} application for ${data.country} on behalf of ${client.name}.`,
+                details: auditDetails("applicationCreatedByActor", {
+                    actorRole: (session.user as any).role === "ADMIN" ? "Admin" : "Agent",
+                    actorName: session.user.name,
+                    appType: data.type,
+                    country: data.country,
+                    clientName: client.name,
+                }),
                 userId: session.user.id,
                 targetId: client.id
             }
@@ -231,7 +241,7 @@ export async function sendOfficialMessageAction(clientId: string, subject: strin
             await tx.auditLog.create({
                 data: {
                     action: "SEND_MESSAGE",
-                    details: `Official message sent to ${client?.name || "client"}: "${subject}"`,
+                    details: auditDetails("officialMessageSent", { clientName: client?.name || "client", subject }),
                     userId: session.user.id,
                     targetId: clientId,
                 }

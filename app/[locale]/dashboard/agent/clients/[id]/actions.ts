@@ -6,6 +6,7 @@ import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { getAgencyStepDefinitions, getAgencyTemplates, getTemplateSteps } from "@/lib/steps-server";
 import { ApplicationType } from "@prisma/client";
+import { auditDetails } from "@/lib/audit-log";
 
 export async function getWorkflowTemplatesAction() {
     const session = await auth.api.getSession({ headers: await headers() });
@@ -81,7 +82,11 @@ export async function updateClientProfileAction(
         await prisma.auditLog.create({
             data: {
                 action: "PROFILE_UPDATE",
-                details: `${(session.user as any).role === "ADMIN" ? "Admin" : "Agent"} ${session.user.name} updated the personal profile for client ${data.name}.`,
+                details: auditDetails("clientProfileUpdatedByActor", {
+                    actorRole: (session.user as any).role === "ADMIN" ? "Admin" : "Agent",
+                    actorName: session.user.name,
+                    clientName: data.name,
+                }),
                 userId: session.user.id,
                 targetId: clientId
             }
@@ -177,7 +182,13 @@ export async function createApplicationForClientAction(
         await prisma.auditLog.create({
             data: {
                 action: "APPLICATION_CREATION",
-                details: `${(session.user as any).role === "ADMIN" ? "Admin" : "Agent"} ${session.user.name} created a ${data.type} application for ${data.country} on behalf of ${client.name}.`,
+                details: auditDetails("applicationCreatedByActor", {
+                    actorRole: (session.user as any).role === "ADMIN" ? "Admin" : "Agent",
+                    actorName: session.user.name,
+                    appType: data.type,
+                    country: data.country,
+                    clientName: client.name,
+                }),
                 userId: session.user.id,
                 targetId: client.id
             }
@@ -225,7 +236,7 @@ export async function sendOfficialMessageAction(clientId: string, subject: strin
             await tx.auditLog.create({
                 data: {
                     action: "SEND_MESSAGE",
-                    details: `Official message sent to ${client?.name || "client"}: "${subject}"`,
+                    details: auditDetails("officialMessageSent", { clientName: client?.name || "client", subject }),
                     userId: session.user.id,
                     targetId: clientId,
                 }

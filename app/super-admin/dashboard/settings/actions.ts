@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { auditDetails } from "@/lib/audit-log";
 import { getPricingSettings } from "@/lib/pricing";
 
 export { getPricingSettings };
@@ -34,7 +35,7 @@ export async function updatePricingSettingsAction(formData: FormData) {
         await prisma.auditLog.create({
             data: {
                 action: "UPDATE_PRICING_SETTINGS",
-                details: `Custom plan pricing updated by Super Admin: base=${basePriceFcfa}, agent=${pricePerAgentFcfa}, client=${pricePerClientFcfa} FCFA.`,
+                details: auditDetails("pricingSettingsUpdated", { base: basePriceFcfa, agent: pricePerAgentFcfa, client: pricePerClientFcfa }),
                 userId: session.user.id,
             },
         });
@@ -100,7 +101,7 @@ export async function createPlanAction(formData: FormData) {
         await prisma.auditLog.create({
             data: {
                 action: "CREATE_PLAN",
-                details: `Plan "${name}" created by Super Admin.`,
+                details: auditDetails("planCreated", { name }),
                 userId: session.user.id,
                 targetId: plan.id,
             },
@@ -140,7 +141,7 @@ export async function updatePlanAction(planId: string, formData: FormData) {
         await prisma.auditLog.create({
             data: {
                 action: "UPDATE_PLAN",
-                details: `Plan "${name}" updated by Super Admin.`,
+                details: auditDetails("planUpdated", { name }),
                 userId: session.user.id,
                 targetId: planId,
             },
@@ -197,7 +198,7 @@ export async function deletePlanAction(planId: string) {
             await tx.auditLog.create({
                 data: {
                     action: "DELETE_PLAN",
-                    details: `Plan "${plan.name}" (${plan.slug}) deleted by Super Admin.`,
+                    details: auditDetails("planDeleted", { name: plan.name, slug: plan.slug }),
                     userId: session.user.id,
                     targetId: planId,
                 },

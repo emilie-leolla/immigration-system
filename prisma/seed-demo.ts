@@ -1,6 +1,7 @@
 import "dotenv/config";
 import prisma from "../lib/prisma";
 import { hashPassword } from "better-auth/crypto";
+import { auditDetails } from "../lib/audit-log";
 
 const DEMO_PASSWORD = "Demo2026!";
 
@@ -373,24 +374,24 @@ async function main() {
     // 9. Journal d'activité
     const now = Date.now();
     const activityLog: { action: string; details: string; hoursAgo: number; userId?: string }[] = [
-        { action: "CREATE_CLIENT", details: `Client ${clients[0].name} créé par Admin ${ADMIN_NAME}.`, hoursAgo: 96, userId: admin.id },
-        { action: "CREATE_CLIENT", details: `Client ${clients[1].name} créé par Admin ${ADMIN_NAME}.`, hoursAgo: 90, userId: admin.id },
-        { action: "CREATE_APPLICATION", details: `Procédure (Standard PR - Canada) créée pour ${clients[0].name} par ${AGENT_NAME}.`, hoursAgo: 88, userId: agent.id },
-        { action: "DOCUMENT_UPLOAD", details: `${AGENT_NAME} a téléversé "Passeport.pdf" pour l'étape Document Collection de ${clients[0].name}.`, hoursAgo: 70, userId: agent.id },
-        { action: "STEP_UPDATE", details: `Agent ${AGENT_NAME} a mis à jour l'étape REGISTRATION (statut: APPROVED).`, hoursAgo: 65, userId: agent.id },
-        { action: "CREATE_CLIENT", details: `Client ${clients[2].name} créé par Admin ${ADMIN_NAME}.`, hoursAgo: 60, userId: admin.id },
-        { action: "STEP_UPDATE", details: `Agent ${AGENT_NAME} a mis à jour l'étape CONTRACT_SIGNING (statut: APPROVED).`, hoursAgo: 48, userId: agent.id },
-        { action: "DOCUMENT_UPLOAD", details: `${AGENT_NAME} a téléversé "Diplome.pdf" pour l'étape Document Collection de ${clients[1].name}.`, hoursAgo: 40, userId: agent.id },
-        { action: "CREATE_APPLICATION", details: `Procédure (Standard PR - Canada) créée pour ${clients[3].name} par ${AGENT_NAME}.`, hoursAgo: 36, userId: agent.id },
-        { action: "STEP_UPDATE", details: `Agent ${AGENT_NAME} a mis à jour l'étape FEE_PAYMENT (statut: APPROVED).`, hoursAgo: 30, userId: agent.id },
-        { action: "CREATE_CLIENT", details: `Client ${clients[3].name} créé par Admin ${ADMIN_NAME}.`, hoursAgo: 24, userId: admin.id },
-        { action: "CREATE_APPLICATION_TEMPLATE", details: `Admin ${ADMIN_NAME} a créé le workflow personnalisé "Visa Vacances-Travail (PVT) - Sur mesure".`, hoursAgo: 22, userId: admin.id },
-        { action: "CREATE_APPLICATION", details: `Procédure (Visa Vacances-Travail - Sur mesure) créée pour ${customClient.name} par ${AGENT_NAME}.`, hoursAgo: 20, userId: agent.id },
-        { action: "STEP_UPDATE", details: `Agent ${AGENT_NAME} a mis à jour l'étape DOCUMENT_COLLECTION (statut: APPROVED).`, hoursAgo: 15, userId: agent.id },
-        { action: "DOCUMENT_UPLOAD", details: `${AGENT_NAME} a téléversé "CV.pdf" pour l'étape Document Collection de ${clients[3].name}.`, hoursAgo: 10, userId: agent.id },
-        { action: "STEP_UPDATE", details: `Agent ${AGENT_NAME} a mis à jour l'étape DIPLOMA_EQUIVALENCE (statut: IN_PROGRESS).`, hoursAgo: 6, userId: agent.id },
-        { action: "CREATE_CLIENT", details: `Client ${clients[4].name} créé par Admin ${ADMIN_NAME}.`, hoursAgo: 4, userId: admin.id },
-        { action: "STEP_UPDATE", details: `Agent ${AGENT_NAME} a approuvé l'étape finale (PASSPORT_SUBMISSION) pour ${clients[4].name}.`, hoursAgo: 2, userId: agent.id }
+        { action: "CREATE_CLIENT", details: auditDetails("clientCreatedByAdmin", { name: clients[0].name, email: clients[0].email, adminName: ADMIN_NAME }), hoursAgo: 96, userId: admin.id },
+        { action: "CREATE_CLIENT", details: auditDetails("clientCreatedByAdmin", { name: clients[1].name, email: clients[1].email, adminName: ADMIN_NAME }), hoursAgo: 90, userId: admin.id },
+        { action: "CREATE_APPLICATION", details: auditDetails("applicationCreatedByAgent", { templateName: "Standard PR - Canada", clientName: clients[0].name, actorName: AGENT_NAME }), hoursAgo: 88, userId: agent.id },
+        { action: "DOCUMENT_UPLOAD", details: auditDetails("documentUploadedByActor", { actorName: AGENT_NAME, docName: "Passeport.pdf", clientName: clients[0].name, stepType: "DOCUMENT_COLLECTION" }), hoursAgo: 70, userId: agent.id },
+        { action: "STEP_UPDATE", details: auditDetails("stepUpdatedByActor", { actorRole: "Agent", actorName: AGENT_NAME, stepType: "REGISTRATION", status: "APPROVED" }), hoursAgo: 65, userId: agent.id },
+        { action: "CREATE_CLIENT", details: auditDetails("clientCreatedByAdmin", { name: clients[2].name, email: clients[2].email, adminName: ADMIN_NAME }), hoursAgo: 60, userId: admin.id },
+        { action: "STEP_UPDATE", details: auditDetails("stepUpdatedByActor", { actorRole: "Agent", actorName: AGENT_NAME, stepType: "CONTRACT_SIGNING", status: "APPROVED" }), hoursAgo: 48, userId: agent.id },
+        { action: "DOCUMENT_UPLOAD", details: auditDetails("documentUploadedByActor", { actorName: AGENT_NAME, docName: "Diplome.pdf", clientName: clients[1].name, stepType: "DOCUMENT_COLLECTION" }), hoursAgo: 40, userId: agent.id },
+        { action: "CREATE_APPLICATION", details: auditDetails("applicationCreatedByAgent", { templateName: "Standard PR - Canada", clientName: clients[3].name, actorName: AGENT_NAME }), hoursAgo: 36, userId: agent.id },
+        { action: "STEP_UPDATE", details: auditDetails("stepUpdatedByActor", { actorRole: "Agent", actorName: AGENT_NAME, stepType: "FEE_PAYMENT", status: "APPROVED" }), hoursAgo: 30, userId: agent.id },
+        { action: "CREATE_CLIENT", details: auditDetails("clientCreatedByAdmin", { name: clients[3].name, email: clients[3].email, adminName: ADMIN_NAME }), hoursAgo: 24, userId: admin.id },
+        { action: "CREATE_APPLICATION_TEMPLATE", details: auditDetails("workflowCreated", { adminName: ADMIN_NAME, templateName: "Visa Vacances-Travail (PVT) - Sur mesure" }), hoursAgo: 22, userId: admin.id },
+        { action: "CREATE_APPLICATION", details: auditDetails("applicationCreatedByAgent", { templateName: "Visa Vacances-Travail - Sur mesure", clientName: customClient.name, actorName: AGENT_NAME }), hoursAgo: 20, userId: agent.id },
+        { action: "STEP_UPDATE", details: auditDetails("stepUpdatedByActor", { actorRole: "Agent", actorName: AGENT_NAME, stepType: "DOCUMENT_COLLECTION", status: "APPROVED" }), hoursAgo: 15, userId: agent.id },
+        { action: "DOCUMENT_UPLOAD", details: auditDetails("documentUploadedByActor", { actorName: AGENT_NAME, docName: "CV.pdf", clientName: clients[3].name, stepType: "DOCUMENT_COLLECTION" }), hoursAgo: 10, userId: agent.id },
+        { action: "STEP_UPDATE", details: auditDetails("stepUpdatedByActor", { actorRole: "Agent", actorName: AGENT_NAME, stepType: "DIPLOMA_EQUIVALENCE", status: "IN_PROGRESS" }), hoursAgo: 6, userId: agent.id },
+        { action: "CREATE_CLIENT", details: auditDetails("clientCreatedByAdmin", { name: clients[4].name, email: clients[4].email, adminName: ADMIN_NAME }), hoursAgo: 4, userId: admin.id },
+        { action: "STEP_UPDATE", details: auditDetails("finalStepApprovedByActor", { actorName: AGENT_NAME, stepType: "PASSPORT_SUBMISSION", clientName: clients[4].name }), hoursAgo: 2, userId: agent.id }
     ];
 
     for (const entry of activityLog) {

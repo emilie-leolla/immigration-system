@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { auditDetails } from "@/lib/audit-log";
 
 export async function completeProfileAction(formData: FormData) {
     const session = await auth.api.getSession({
@@ -39,7 +40,7 @@ export async function completeProfileAction(formData: FormData) {
         await prisma.auditLog.create({
             data: {
                 action: "PROFILE_UPDATE",
-                details: `User ${session.user.name} completed their profile.`,
+                details: auditDetails("profileCompleted", { userName: session.user.name }),
                 userId: session.user.id
             }
         });

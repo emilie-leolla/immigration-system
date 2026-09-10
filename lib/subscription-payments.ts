@@ -4,6 +4,7 @@ import {
   mapPaymentType,
   getCamPayFailureMessage,
 } from "@/lib/campay";
+import { auditDetails } from "@/lib/audit-log";
 
 export type ConfirmResult =
   | { outcome: "success"; planName: string }
@@ -101,7 +102,7 @@ export async function confirmCampayPayment(
     await tx.auditLog.create({
       data: {
         action: "UPGRADE_SUBSCRIPTION",
-        details: `Agency upgraded to plan "${payment.targetPlan!.name}" (${payment.amountFcfa.toLocaleString()} FCFA) via CamPay.`,
+        details: auditDetails("subscriptionUpgraded", { planName: payment.targetPlan!.name, amount: payment.amountFcfa.toLocaleString() }),
         agencyId: payment.subscription.agencyId,
         targetId: payment.subscriptionId,
       },

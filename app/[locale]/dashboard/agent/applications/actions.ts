@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { ApplicationStatus, ProcedureStatus } from "@prisma/client";
+import { auditDetails } from "@/lib/audit-log";
 import { getAgencyTemplates, getTemplateSteps } from "@/lib/steps-server";
 import { getTranslations } from "next-intl/server";
 import { createS3UploadUrl, deleteS3Object } from "@/lib/s3";
@@ -49,7 +50,7 @@ export async function updateApplicationStatusAction(
             await tx.auditLog.create({
                 data: {
                     action: "STATUS_UPDATE",
-                    details: `Application ${applicationId} status updated to ${newStatus} for ${application.client.name}.`,
+                    details: auditDetails("applicationStatusUpdated", { applicationId, newStatus, clientName: application.client.name }),
                     userId: session.user.id,
                     targetId: applicationId
                 }
@@ -314,7 +315,7 @@ export async function updateStepAction(
         await prisma.auditLog.create({
             data: {
                 action: "STEP_UPDATE",
-                details: `${actorRole} ${session.user.name} updated step ${step.type} (Status: ${data.status || step.status}).`,
+                details: auditDetails("stepUpdatedByActor", { actorRole, actorName: session.user.name, stepType: step.type, status: data.status || step.status }),
                 userId: session.user.id,
                 targetId: step.applicationId
             }
@@ -501,7 +502,7 @@ export async function addDocumentAction(
         await prisma.auditLog.create({
             data: {
                 action: "DOCUMENT_UPLOAD",
-                details: `${session.user.name} uploaded "${name}" for ${step.application.client.name}'s ${step.type} step.`,
+                details: auditDetails("documentUploadedByActor", { actorName: session.user.name, docName: name, clientName: step.application.client.name, stepType: step.type }),
                 userId: session.user.id,
                 agencyId,
                 targetId: step.applicationId
@@ -573,7 +574,7 @@ export async function deleteDocumentAction(documentId: string) {
         await prisma.auditLog.create({
             data: {
                 action: "DOCUMENT_DELETE",
-                details: `${session.user.name} removed document "${document.name}".`,
+                details: auditDetails("documentDeletedByActor", { actorName: session.user.name, docName: document.name }),
                 userId: session.user.id,
                 agencyId,
                 targetId: document.Procedure.applicationId
@@ -730,7 +731,7 @@ export async function createApplicationAction(clientId: string, templateId: stri
         await prisma.auditLog.create({
             data: {
                 action: "CREATE_APPLICATION",
-                details: `Application (${template.name}) created for ${client.name} by ${session.user.name}.`,
+                details: auditDetails("applicationCreatedByAgent", { templateName: template.name, clientName: client.name, actorName: session.user.name }),
                 userId: session.user.id,
                 agencyId,
                 targetId: application.id
@@ -820,7 +821,13 @@ export async function finalizeProcedureAction(
             await tx.auditLog.create({
                 data: {
                     action: "FINALIZE_PROCEDURE",
-                    details: `Procedure ${applicationId} (${application.country}) was finalized and marked COMPLETED for ${application.client.name} (${application.client.email}) by ${session.user.name}.`,
+                    details: auditDetails("procedureFinalizedByActor", {
+                        applicationId,
+                        country: application.country,
+                        clientName: application.client.name,
+                        clientEmail: application.client.email,
+                        actorName: session.user.name,
+                    }),
                     userId: session.user.id,
                     agencyId: application.agencyId,
                     targetId: applicationId

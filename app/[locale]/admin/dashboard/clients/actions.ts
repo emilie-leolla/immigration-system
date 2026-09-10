@@ -6,6 +6,7 @@ import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { hashPassword } from "better-auth/crypto";
 import { checkClientQuota } from "@/lib/subscription";
+import { auditDetails } from "@/lib/audit-log";
 export async function createClientAction(data: {
     name: string;
     email: string;
@@ -70,7 +71,9 @@ if (!quota.ok) return { error: quota.error, code: quota.code };
         await prisma.auditLog.create({
             data: {
                 action: "CREATE_CLIENT",
-                details: `Client ${name} (${email}) created by Admin ${session.user.name}.${agentId ? ` Assigned to agent ID ${agentId}.` : ""}`,
+                details: agentId
+                    ? auditDetails("clientCreatedByAdminAssigned", { name, email, adminName: session.user.name, agentId })
+                    : auditDetails("clientCreatedByAdmin", { name, email, adminName: session.user.name }),
                 userId: session.user.id,
                 agencyId,
                 targetId: newClient.id,
@@ -155,7 +158,7 @@ export async function assignAgentToClientAction(clientId: string, agentId: strin
             await tx.auditLog.create({
                 data: {
                     action: "ASSIGN_AGENT",
-                    details: `Agent ${agentName} assigned to Client ${client.name} (${client.email}).`,
+                    details: auditDetails("agentAssignedToClient", { agentName, clientName: client.name, clientEmail: client.email }),
                     userId: session.user.id,
                     agencyId: adminAgencyId,
                     targetId: clientId
@@ -195,7 +198,9 @@ export async function toggleSuspendClientAction(clientId: string, currentlySuspe
         await prisma.auditLog.create({
             data: {
                 action: currentlySuspended ? "UNSUSPEND_CLIENT" : "SUSPEND_CLIENT",
-                details: `Client ${client.name} (${client.email}) ${currentlySuspended ? "unsuspended" : "suspended"} by Admin.`,
+                details: currentlySuspended
+                    ? auditDetails("clientUnsuspended", { name: client.name, email: client.email })
+                    : auditDetails("clientSuspended", { name: client.name, email: client.email }),
                 userId: session.user.id,
                 agencyId: adminAgencyId,
                 targetId: clientId
@@ -275,7 +280,7 @@ export async function deleteClientAction(clientId: string) {
             await tx.auditLog.create({
                 data: {
                     action: "DELETE_CLIENT",
-                    details: `Client ${client.name} (${client.email}) was permanently deleted by Admin.`,
+                    details: auditDetails("clientDeleted", { name: client.name, email: client.email }),
                     userId: session.user.id,
                     agencyId: adminAgencyId,
                     targetId: clientId
@@ -386,7 +391,9 @@ export async function updateClientAction(clientId: string, name: string, email: 
         await prisma.auditLog.create({
             data: {
                 action: "UPDATE_CLIENT",
-                details: `Client ${nameTrimmed} (${emailTrimmed}) details updated by Admin ${session.user.name}.${password && password.trim() !== "" ? " Password reset." : ""}`,
+                details: (password && password.trim() !== "")
+                    ? auditDetails("clientUpdatedByAdminWithPasswordReset", { name: nameTrimmed, email: emailTrimmed, adminName: session.user.name })
+                    : auditDetails("clientUpdatedByAdmin", { name: nameTrimmed, email: emailTrimmed, adminName: session.user.name }),
                 userId: session.user.id,
                 agencyId: adminAgencyId,
                 targetId: clientId

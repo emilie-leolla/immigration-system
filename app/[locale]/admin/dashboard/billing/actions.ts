@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { randomUUID } from "crypto";
 import { initializePayment } from "@/lib/campay";
 import { getLocale } from "next-intl/server";
+import { auditDetails } from "@/lib/audit-log";
 
 const CURRENCY = "XAF";
 
@@ -187,7 +188,7 @@ export async function upgradeSubscriptionAction(formData: FormData): Promise<Che
                 await tx.auditLog.create({
                     data: {
                         action: "UPGRADE_SUBSCRIPTION",
-                        details: `Agency switched to the free plan "${newPlan.name}".`,
+                        details: auditDetails("switchedToFreePlan", { planName: newPlan.name }),
                         userId: session.user.id,
                         agencyId,
                         targetId: subscription.id,
@@ -263,7 +264,7 @@ export async function createCustomPlanAndCheckoutAction(formData: FormData): Pro
                 await tx.auditLog.create({
                     data: {
                         action: "UPGRADE_SUBSCRIPTION",
-                        details: `Agency switched to a custom plan (${numAgents} agents, ${numClients} clients).`,
+                        details: auditDetails("switchedToCustomPlan", { numAgents, numClients }),
                         userId: session.user.id,
                         agencyId,
                         targetId: subscription.id,

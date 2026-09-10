@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { MaritalStatus } from "@prisma/client";
+import { auditDetails } from "@/lib/audit-log";
 
 export async function updateProfileTranslate(formData: { 
     name: string; 
@@ -53,7 +54,7 @@ export async function updateProfileTranslate(formData: {
         await prisma.auditLog.create({
             data: {
                 action: "PROFILE_UPDATE",
-                details: `User ${session.user.id} updated their full personal profile.`,
+                details: auditDetails("clientUpdatedOwnProfile"),
                 userId: session.user.id
             }
         });

@@ -5,6 +5,7 @@ import prisma from '@/lib/prisma'
 import { multiSession, emailOTP } from "better-auth/plugins"
 import { sendEmail } from "@/lib/resend"
 import { buildOtpEmailHtml } from "@/lib/otp-email"
+import { auditDetails } from "@/lib/audit-log"
 
 export const auth = betterAuth({
     database: prismaAdapter(prisma, {
@@ -137,7 +138,7 @@ export const auth = betterAuth({
                             await prisma.auditLog.create({
                                 data: {
                                     action: "USER_LOGIN",
-                                    details: `${user?.name || 'Unknown User'} (${user?.email || 'No Email'}) logged in.`,
+                                    details: auditDetails("userLoggedIn", { name: user?.name || "Unknown User", email: user?.email || "No Email" }),
                                     userId: session.userId
                                 }
                             });

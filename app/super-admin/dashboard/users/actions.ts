@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { auditDetails } from "@/lib/audit-log";
 
 async function requireSuperAdmin() {
     const session = await auth.api.getSession({ headers: await headers() });
@@ -57,7 +58,9 @@ export async function toggleSuspendUserAction(userId: string, currentlySuspended
         await prisma.auditLog.create({
             data: {
                 action: currentlySuspended ? "UNSUSPEND_USER" : "SUSPEND_USER",
-                details: `User ${user.name} (${user.email}) ${currentlySuspended ? "unsuspended" : "suspended"} by Super Admin.`,
+                details: currentlySuspended
+                    ? auditDetails("userUnsuspendedBySuperAdmin", { name: user.name, email: user.email })
+                    : auditDetails("userSuspendedBySuperAdmin", { name: user.name, email: user.email }),
                 userId: session.user.id,
                 agencyId: user.agencyId,
                 targetId: userId,
@@ -98,7 +101,7 @@ export async function changeUserRoleAction(userId: string, role: string) {
         await prisma.auditLog.create({
             data: {
                 action: "CHANGE_USER_ROLE",
-                details: `User ${user.name} (${user.email}) role changed from ${user.role} to ${role} by Super Admin.`,
+                details: auditDetails("userRoleChangedBySuperAdmin", { name: user.name, email: user.email, oldRole: user.role, newRole: role }),
                 userId: session.user.id,
                 agencyId: user.agencyId,
                 targetId: userId,
@@ -132,7 +135,7 @@ export async function deleteUserAction(userId: string) {
         await prisma.auditLog.create({
             data: {
                 action: "DELETE_USER",
-                details: `User ${user.name} (${user.email}) deleted by Super Admin.`,
+                details: auditDetails("userDeletedBySuperAdmin", { name: user.name, email: user.email }),
                 userId: session.user.id,
                 agencyId: user.agencyId,
                 targetId: userId,

@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { ProcedureStatus } from "@prisma/client";
+import { auditDetails } from "@/lib/audit-log";
 
 const AGENT_ONLY_STEPS = ["DIPLOMA_EQUIVALENCE", "PROFILE_CREATION", "APPLICATION_SUBMISSION", "PASSPORT_SUBMISSION"];
 
@@ -84,7 +85,11 @@ export async function submitProcedureAction(stepId: string) {
         await prisma.auditLog.create({
             data: {
                 action: "STEP_SUBMISSION",
-                details: `Client completed step ${step.type} for ${step.application.country} application. Status: ${isClientFinalizableStep ? 'APPROVED' : 'IN_PROGRESS'}`,
+                details: auditDetails("clientCompletedStep", {
+                    stepType: step.type,
+                    country: step.application.country,
+                    status: isClientFinalizableStep ? "APPROVED" : "IN_PROGRESS",
+                }),
                 userId: session.user.id,
                 targetId: step.applicationId
             }

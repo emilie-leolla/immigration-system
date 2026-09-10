@@ -1452,6 +1452,20 @@
     "downgradeCancelled": "L'agence a annulé une rétrogradation de forfait programmée.",
     "planDowngradeScheduled": "L'agence a programmé une rétrogradation vers le forfait « {planName} », effective le {date}.",
     "switchedToFreePlan": "L'agence est passée au forfait gratuit « {planName} ».",
+    "switchedToCustomPlan": "L'agence est passée à un forfait personnalisé ({numAgents} agents, {numClients} clients).",
+    "userSuspendedBySuperAdmin": "Utilisateur {name} ({email}) suspendu par le Super Admin.",
+    "userUnsuspendedBySuperAdmin": "Utilisateur {name} ({email}) réactivé par le Super Admin.",
+    "userRoleChangedBySuperAdmin": "Rôle de l'utilisateur {name} ({email}) changé de {oldRole} à {newRole} par le Super Admin.",
+    "userDeletedBySuperAdmin": "Utilisateur {name} ({email}) supprimé par le Super Admin.",
+    "pricingSettingsUpdated": "Tarification du forfait personnalisé mise à jour par le Super Admin : base={base}, agent={agent}, client={client} FCFA.",
+    "planCreated": "Forfait « {name} » créé par le Super Admin.",
+    "planUpdated": "Forfait « {name} » mis à jour par le Super Admin.",
+    "planDeleted": "Forfait « {name} » ({slug}) supprimé par le Super Admin.",
+    "clientUpdatedByAdmin": "Détails du client {name} ({email}) mis à jour par l'administrateur {adminName}.",
+    "clientUpdatedByAdminWithPasswordReset": "Détails du client {name} ({email}) mis à jour par l'administrateur {adminName}. Mot de passe réinitialisé.",
+    "procedureFinalizedByActor": "Procédure {applicationId} ({country}) finalisée et marquée TERMINÉE pour {clientName} ({clientEmail}) par {actorName}.",
+    "userLoggedIn": "{name} ({email}) s'est connecté(e).",
+    "finalStepApprovedByActor": "{actorName} a approuvé l'étape finale ({stepType}) pour {clientName}.",
     "clientCreatedByAdmin": "Client {name} ({email}) créé par l'administrateur {adminName}.",
     "clientCreatedByAdminAssigned": "Client {name} ({email}) créé par l'administrateur {adminName}. Assigné à l'agent ID {agentId}.",
     "agentAssignedToClient": "Agent {agentName} assigné au client {clientName} ({clientEmail}).",
@@ -1477,7 +1491,7 @@
     "applicationCreatedByAgent": "Demande ({templateName}) créée pour {clientName} par {actorName}.",
     "clientUpdatedOwnProfile": "Le client a mis à jour l'intégralité de son profil personnel.",
     "clientCompletedStep": "Le client a complété l'étape {stepType} pour la demande {country}. Statut : {status}",
-    "subscriptionUpgraded": "L'agence est passée au forfait « {planName} » ({amount} FCFA) via Flutterwave."
+    "subscriptionUpgraded": "L'agence est passée au forfait « {planName} » ({amount} FCFA) via CamPay."
   },
   "auditActions": {
     "APPLICATION_CREATION": "Création de demande",
@@ -1511,7 +1525,8 @@
     "CREATE_PLAN": "Création de forfait",
     "UPDATE_PLAN": "Mise à jour de forfait",
     "DELETE_PLAN": "Suppression de forfait",
-    "UPDATE_PRICING_SETTINGS": "Mise à jour de la tarification"
+    "UPDATE_PRICING_SETTINGS": "Mise à jour de la tarification",
+    "USER_LOGIN": "Connexion utilisateur"
   },
   "superAdminDashboard": {
     "eyebrow": "Administration globale",

@@ -16,6 +16,10 @@
  * a known, accepted trade-off (there's no way to retroactively translate
  * free text that was already written).
  */
-export function auditDetails(key: string, params: Record<string, string | number> = {}): string {
-    return JSON.stringify({ key, params });
+export function auditDetails(key: string, params: Record<string, string | number | null | undefined> = {}): string {
+    const safeParams: Record<string, string | number> = {};
+    for (const [k, v] of Object.entries(params)) {
+        safeParams[k] = v === null || v === undefined ? "N/A" : v;
+    }
+    return JSON.stringify({ key, params: safeParams });
 }
