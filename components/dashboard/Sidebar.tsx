@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 import { LOGOS } from "@/lib/branding";
+import { useTranslations } from "next-intl";
 
 const iconMap: Record<string, any> = {
     LayoutDashboard,
@@ -67,6 +68,7 @@ export function Sidebar({
 }: SidebarProps) {
     const pathname = usePathname();
     const router = useRouter();
+    const t = useTranslations("common");
     const [internalIsOpen, setInternalIsOpen] = useState(false);
 
     const isOpen =
@@ -339,9 +341,7 @@ export function Sidebar({
                         <LogOut className="mr-3 h-5 w-5 shrink-0 group-hover:rotate-12 transition-transform" />
 
                         <span>
-                            {isSuperAdmin
-                                ? "Déconnexion"
-                                : "Logout"}
+                            {t("logout")}
                         </span>
                     </button>
                 </div>

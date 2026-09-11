@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { signOut, useSession } from "@/lib/auth-client";
 import { useRouter, usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 interface HeaderProps {
     title: string;
@@ -15,6 +16,7 @@ interface HeaderProps {
 }
 
 export function Header({ title, onMenuClick, showLogout = false, centerSlot, locale }: HeaderProps) {
+    const t = useTranslations("common");
     const router = useRouter();
     const { data: session } = useSession();
     const pathname = usePathname();
@@ -87,7 +89,7 @@ export function Header({ title, onMenuClick, showLogout = false, centerSlot, loc
                             className="text-gray-500 hover:text-red-600 hover:bg-red-50 flex items-center gap-2 rounded-xl font-bold transition-all px-2 md:px-3"
                         >
                             <LogOut className="h-4 w-4" />
-                            <span className="hidden sm:inline">Logout</span>
+                            <span className="hidden sm:inline">{t("logout")}</span>
                         </Button>
                     )}
                 </div>
