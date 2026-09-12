@@ -983,6 +983,7 @@
     "colAssignedAgent": "Assigned Agent",
     "colStatus": "Status",
     "colActions": "Actions",
+    "viewDetailsTooltip": "View Details",
     "selectAgent": "Select Agent",
     "unassigned": "Unassigned",
     "statusSuspended": "Suspended",
@@ -1234,7 +1235,11 @@
     "evidenceRequiredSubject": "Evidence Required: {docName}",
     "awaitingAttachments": "Awaiting client attachments...",
     "noActiveJourneys": "No Active Journeys",
-    "noActiveJourneysDescription": "This client hasn't started any immigration applications yet."
+    "noActiveJourneysDescription": "This client hasn't started any immigration applications yet.",
+    "sendIntakeForm": "Send Intake Form",
+    "sendingIntakeForm": "Sending...",
+    "intakeFormSentToast": "Intake form link sent to the client.",
+    "intakeFormErrorToast": "Couldn't send the intake form link."
   },
   "agentEditClientProfile": {
     "toastSuccess": "Client profile updated successfully",
@@ -1483,6 +1488,8 @@
     "clientCreatedByActor": "Client {name} ({email}) created by {actorRole} {actorName}.",
     "applicationCreatedByActor": "{actorRole} {actorName} created a {appType} application for {country} on behalf of {clientName}.",
     "officialMessageSent": "Official message sent to {clientName}: \"{subject}\"",
+    "intakeFormLinkSent": "{actorName} sent the intake form link to {clientName}.",
+    "intakeFormSubmitted": "{clientName} submitted the intake form (destination: {country}).",
     "clientProfileUpdatedByActor": "{actorRole} {actorName} updated the personal profile for client {clientName}.",
     "applicationStatusUpdated": "Application {applicationId} status updated to {newStatus} for {clientName}.",
     "stepUpdatedByActor": "{actorRole} {actorName} updated step {stepType} (Status: {status}).",
@@ -1526,7 +1533,9 @@
     "UPDATE_PLAN": "Update Plan",
     "DELETE_PLAN": "Delete Plan",
     "UPDATE_PRICING_SETTINGS": "Update Pricing Settings",
-    "USER_LOGIN": "User Login"
+    "USER_LOGIN": "User Login",
+    "SEND_INTAKE_FORM_LINK": "Send Intake Form Link",
+    "SUBMIT_INTAKE_FORM": "Intake Form Submitted"
   },
   "superAdminDashboard": {
     "eyebrow": "Global Administration",

@@ -983,6 +983,7 @@
     "colAssignedAgent": "Agent assigné",
     "colStatus": "Statut",
     "colActions": "Actions",
+    "viewDetailsTooltip": "Voir les détails",
     "selectAgent": "Sélectionner un agent",
     "unassigned": "Non assigné",
     "statusSuspended": "Suspendu",
@@ -1234,7 +1235,11 @@
     "evidenceRequiredSubject": "Preuve requise : {docName}",
     "awaitingAttachments": "En attente des pièces jointes du client...",
     "noActiveJourneys": "Aucun parcours actif",
-    "noActiveJourneysDescription": "Ce client n'a pas encore démarré de demande d'immigration."
+    "noActiveJourneysDescription": "Ce client n'a pas encore démarré de demande d'immigration.",
+    "sendIntakeForm": "Envoyer un formulaire de renseignement",
+    "sendingIntakeForm": "Envoi en cours...",
+    "intakeFormSentToast": "Le lien du formulaire a été envoyé au client.",
+    "intakeFormErrorToast": "Impossible d'envoyer le lien du formulaire."
   },
   "agentEditClientProfile": {
     "toastSuccess": "Profil du client mis à jour avec succès",
@@ -1483,6 +1488,8 @@
     "clientCreatedByActor": "Client {name} ({email}) créé par {actorRole} {actorName}.",
     "applicationCreatedByActor": "{actorRole} {actorName} a créé une demande {appType} pour {country} au nom de {clientName}.",
     "officialMessageSent": "Message officiel envoyé à {clientName} : « {subject} »",
+    "intakeFormLinkSent": "{actorName} a envoyé le lien du formulaire à {clientName}.",
+    "intakeFormSubmitted": "{clientName} a soumis le formulaire de renseignement (destination : {country}).",
     "clientProfileUpdatedByActor": "{actorRole} {actorName} a mis à jour le profil personnel du client {clientName}.",
     "applicationStatusUpdated": "Statut de la demande {applicationId} mis à jour à {newStatus} pour {clientName}.",
     "stepUpdatedByActor": "{actorRole} {actorName} a mis à jour l'étape {stepType} (Statut : {status}).",
@@ -1526,7 +1533,9 @@
     "UPDATE_PLAN": "Mise à jour de forfait",
     "DELETE_PLAN": "Suppression de forfait",
     "UPDATE_PRICING_SETTINGS": "Mise à jour de la tarification",
-    "USER_LOGIN": "Connexion utilisateur"
+    "USER_LOGIN": "Connexion utilisateur",
+    "SEND_INTAKE_FORM_LINK": "Envoi du lien du formulaire",
+    "SUBMIT_INTAKE_FORM": "Formulaire de renseignement soumis"
   },
   "superAdminDashboard": {
     "eyebrow": "Administration globale",

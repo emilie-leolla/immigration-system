@@ -7,6 +7,7 @@ import { useState } from "react";
 import Link from "next/link";
 import CreateApplicationModal from "./create-application-modal";
 import { useTranslations } from "next-intl";
+import SendIntakeFormButton from "../clients/[id]/send-intake-form-button";
 
 interface ApplicationListProps {
     initialApplications: any[];
@@ -149,9 +150,12 @@ function ApplicationCard({ app, onViewDoc }: { app: any, onViewDoc: (doc: any) =
                     <div className="space-y-4 p-8 rounded-[32px] border border-gray-100 bg-white">
                         <div className="flex justify-between items-center mb-2">
                            <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{t("clientIdentity")}</h4>
-                           <Link href={`/dashboard/agent/clients/${app.clientId}`}>
-                             <Button variant="ghost" size="sm" className="h-8 text-[10px] font-black text-blue-600 hover:bg-blue-50 px-4 rounded-xl">{t("viewProfile")}</Button>
-                           </Link>
+                           <div className="flex items-center gap-2">
+                               <SendIntakeFormButton clientId={app.clientId} />
+                               <Link href={`/dashboard/agent/clients/${app.clientId}`}>
+                                 <Button variant="ghost" size="sm" className="h-8 text-[10px] font-black text-blue-600 hover:bg-blue-50 px-4 rounded-xl">{t("viewProfile")}</Button>
+                               </Link>
+                           </div>
                         </div>
                         <div className="space-y-1">
                             <p className="text-lg font-black text-gray-900 truncate">{app.client.name}</p>

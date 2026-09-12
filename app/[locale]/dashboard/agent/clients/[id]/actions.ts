@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { getAgencyStepDefinitions, getAgencyTemplates, getTemplateSteps } from "@/lib/steps-server";
 import { ApplicationType } from "@prisma/client";
 import { auditDetails } from "@/lib/audit-log";
+import { sendEmail } from "@/lib/resend";
 
 export async function getWorkflowTemplatesAction() {
     const session = await auth.api.getSession({ headers: await headers() });
@@ -248,5 +249,68 @@ export async function sendOfficialMessageAction(clientId: string, subject: strin
     } catch (e: any) {
         console.error("Messaging Error:", e);
         return { error: "Failed to send official message." };
+    }
+}
+
+/**
+ * Emails the client a link to our own internal intake form (protected by
+ * login — see middleware in proxy.ts). Replaces the earlier version that
+ * pointed at an external form; the form itself now lives inside the app.
+ */
+export async function sendIntakeFormLinkAction(clientId: string) {
+    try {
+        const session = await auth.api.getSession({ headers: await headers() });
+
+        if (!session || !["AGENT", "ADMIN"].includes((session.user as any).role)) {
+            return { error: "Unauthorized access." };
+        }
+
+        const client = await prisma.user.findUnique({
+            where: { id: clientId },
+            select: { id: true, name: true, email: true, agencyId: true },
+        });
+
+        if (!client) return { error: "Client not found." };
+
+        const agencyId = (session.user as any).agencyId;
+        if (client.agencyId !== agencyId) {
+            return { error: "This client does not belong to your agency." };
+        }
+
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") || "";
+        const formUrl = `${appUrl}/fr/intake-form`;
+
+        const html = `
+            <p>Bonjour ${client.name},</p>
+            <p>Merci de bien vouloir vous connecter à votre compte et compléter le formulaire de renseignement suivant afin que nous puissions poursuivre le traitement de votre dossier :</p>
+            <p><a href="${formUrl}" style="background-color:#1E3A8A;color:#ffffff;padding:12px 24px;border-radius:8px;text-decoration:none;display:inline-block;">Remplir le formulaire de renseignement</a></p>
+            <p>Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :<br/>${formUrl}</p>
+            <p>Vous devrez vous connecter avec votre compte pour y accéder — vos réponses seront automatiquement sauvegardées au fur et à mesure, vous pouvez donc reprendre plus tard si besoin.</p>
+        `;
+
+        const result = await sendEmail({
+            to: client.email,
+            subject: "Formulaire de renseignement à compléter — Procédure Facile",
+            html,
+        });
+
+        if (result.error) {
+            return { error: "Failed to send the email. Please try again." };
+        }
+
+        await prisma.auditLog.create({
+            data: {
+                action: "SEND_INTAKE_FORM_LINK",
+                details: auditDetails("intakeFormLinkSent", { clientName: client.name, actorName: session.user.name }),
+                userId: session.user.id,
+                agencyId,
+                targetId: clientId,
+            },
+        });
+
+        return { success: true };
+    } catch (e: any) {
+        console.error("Send intake form link error:", e);
+        return { error: "Failed to send the intake form link." };
     }
 }

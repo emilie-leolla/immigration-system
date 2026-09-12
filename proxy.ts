@@ -50,13 +50,10 @@ export default async function proxy(request: NextRequest) {
     console.log("[DEBUG] cookie header:", request.headers.get("cookie"));
     console.log("[DEBUG] session found:", session ? `yes (user: ${session.user?.email})` : "NO");
 
-    // /admin/login and /super-admin/login have been removed — everyone now
-    // signs in through the single client-designed /sign-in page. Only the
-    // admin registration page remains public here.
     const publicAdminRoutes = ["/admin/register"];
 
     if (!session) {
-        const protectedPaths = ["/admin", "/super-admin", "/dashboard", "/complete-profile", "/applications"];
+        const protectedPaths = ["/admin", "/super-admin", "/dashboard", "/complete-profile", "/applications", "/intake-form"];
         const needsAuth = protectedPaths.some(p => barePathname.startsWith(p));
 
         if (needsAuth) {

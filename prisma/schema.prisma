@@ -16,6 +16,21 @@ model PricingSettings {
   @@map("pricing_settings")
 }
 
+model IntakeFormResponse {
+  id             String    @id @default(uuid())
+  clientId       String    @unique
+  client         User      @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  country        String?
+  status         String    @default("DRAFT")
+  answers        Json      @default("{}")
+  currentSection String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  submittedAt    DateTime?
+
+  @@map("intake_form_responses")
+}
+
 model Agency {
   id                   String                @id @default(uuid())
   name                 String
@@ -116,6 +131,7 @@ model User {
   applications       Application[]     @relation("ClientApplications")
   authoredLogs       AuditLog[]        @relation("AuthorLogs")
   documents          Document[]
+  intakeFormResponse IntakeFormResponse?
   messages           Message[]
   receivedMessages   OfficialMessage[] @relation("ReceivedMessages")
   sentMessages       OfficialMessage[] @relation("SentMessages")
